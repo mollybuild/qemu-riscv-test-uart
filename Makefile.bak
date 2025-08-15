@@ -1,0 +1,139 @@
+FLAGS   = -nostartfiles -g
+QEMU64	= /opt/qemu/bin/qemu-system-riscv64
+QEMU32	= /opt/qemu/bin/qemu-system-riscv32
+
+all: test64.img test32.img
+
+# 64 bit testcase
+
+test64.img: test64.elf
+	riscv64-unknown-linux-gnu-objcopy test64.elf -I binary test64.img
+	riscv64-unknown-linux-gnu-objdump -d test64.elf > test64.asm
+
+test64.elf: test64.o link.ld Makefile
+	riscv64-unknown-linux-gnu-ld -T link.ld -o test64.elf test64.o
+
+test64.o: test64-k.s
+	riscv64-unknown-linux-gnu-gcc $(FLAGS) -march=rv64gc_zbkb_zbkc_zbkx_zknd_zkne_zknh_zksed_zksh -mabi=lp64d -c $< -o $@
+
+run64: test64.img
+	$(QEMU64) -cpu rv64,zbkb=true,zbkc=true,zbkx=true,zknd=true,zkne=true,zknh=true,zksed=true,zksh=true -M virt -bios none -serial stdio -display none -kernel test64.img
+
+gdb64: test64.img
+	$(QEMU64) -cpu rv64,zbkb=true,zbkc=true,zbkx=true,zknd=true,zkne=true,zknh=true,zksed=true,zksh=true -s -S -M virt -bios none -serial stdio -display none -kernel test64.img
+
+# 32 bit testcase
+
+test32.img: test32.elf
+	riscv32-unknown-linux-gnu-objcopy test32.elf -I binary test32.img
+	riscv32-unknown-linux-gnu-objdump -d test32.elf > test32.asm
+
+test32.elf: test32.o link.ld Makefile
+	riscv32-unknown-linux-gnu-ld -T link.ld -o test32.elf test32.o
+
+test32.o: test32.s
+	riscv32-unknown-linux-gnu-gcc $(FLAGS) -march=rv32gp -mabi=ilp32 -c $< -o $@
+
+run32: test32.img
+	$(QEMU32) -cpu rv32,x-p=true -M virt -bios none -serial stdio -display none -kernel test32.img
+
+gdb32: test32.img
+	$(QEMU32) -cpu rv32,x-p=true -s -S -M virt -bios none -serial stdio -display none -kernel test32.img
+
+# 32 bit testcase for K ext
+test32-k.img: test32-k.elf
+	riscv32-unknown-linux-gnu-objcopy test32-k.elf -I binary test32-k.img
+	riscv32-unknown-linux-gnu-objdump -d test32-k.elf > test32-k.asm
+test32-k.elf: test32-k.o link.ld Makefile
+	riscv32-unknown-linux-gnu-ld -T link.ld -o test32-k.elf test32-k.o
+test32-k.o: test32-k.s
+	riscv32-unknown-linux-gnu-gcc $(FLAGS) -march=rv32gc_zbkb_zbkc_zbkx_zknd_zkne_zknh_zksed_zksh -mabi=ilp32d -c $< -o $@
+run32-k: test32-k.img
+	$(QEMU32) -cpu rv32,zbkb=true,zbkc=true,zbkx=true,zknd=true,zkne=true,zknh=true,zksed=true,zksh=true -M virt -bios none -serial stdio -display none -kernel test32-k.img
+gdb32-k: test32-k.img
+	$(QEMU32) -cpu rv32,zbkb=true,zbkc=true,zbkx=true,zknd=true,zkne=true,zknh=true,zksed=true,zksh=true -s -S -M virt -bios none -serial stdio -display none -kernel test32-k.img
+
+# 64 bit testcase for zfinx ext
+test64-zfinx.img: test64-zfinx.elf
+	riscv64-unknown-linux-gnu-objcopy test64-zfinx.elf -I binary test64-zfinx.img
+	riscv64-unknown-linux-gnu-objdump -d test64-zfinx.elf > test64-zfinx.asm
+test64-zfinx.elf: test64-zfinx.o link.ld Makefile
+	riscv64-unknown-linux-gnu-ld -T link.ld -o test64-zfinx.elf test64-zfinx.o
+test64-zfinx.o: test64-zfinx.s
+	riscv64-unknown-linux-gnu-gcc $(FLAGS) -march=rv64imac_zfinx -mabi=lp64 -c $< -o $@
+run64-zfinx: test64-zfinx.img
+	$(QEMU64) -cpu rv64,f=false,d=false,zfa=false,zfinx=true -M virt -bios none -serial stdio -display none -kernel test64-zfinx.img
+gdb64-zfinx: test64-zfinx.img
+	$(QEMU64) -cpu rv64,f=false,d=false,zfa=false,zfinx=true -s -S -M virt -bios none -serial stdio -display none -kernel test64-zfinx.img
+
+# 32 bit testcase for zfinx ext
+test32-zfinx.img: test32-zfinx.elf
+	riscv64-unknown-linux-gnu-objcopy test32-zfinx.elf -I binary test32-zfinx.img
+	riscv64-unknown-linux-gnu-objdump -d test32-zfinx.elf > test32-zfinx.asm
+test32-zfinx.elf: test32-zfinx.o link.ld Makefile
+	riscv64-unknown-linux-gnu-ld -m elf32lriscv_ilp32 -T link.ld -o test32-zfinx.elf test32-zfinx.o
+test32-zfinx.o: test32-zfinx.s
+	riscv64-unknown-linux-gnu-gcc $(FLAGS) -march=rv32imac_zfinx -mabi=ilp32 -c $< -o $@
+run32-zfinx: test32-zfinx.img
+	$(QEMU32) -cpu rv32,f=false,d=false,zfa=false,zfinx=true -M virt -bios none -serial stdio -display none -kernel test32-zfinx.img
+gdb32-zfinx: test32-zfinx.img
+	$(QEMU32) -cpu rv32,f=false,d=false,zfa=false,zfinx=true -s -S -M virt -bios none -serial stdio -display none -kernel test32-zfinx.img
+
+# 64 bit testcase for zce
+test64-zce.img: test64-zce.elf
+	riscv64-unknown-linux-gnu-objcopy test64-zce.elf -I binary test64-zce.img
+	riscv64-unknown-linux-gnu-objdump -d test64-zce.elf > test64-zce.asm
+test64-zce.elf: test64-zce.o link.ld Makefile
+	riscv64-unknown-linux-gnu-ld -T link.ld -o test64-zce.elf test64-zce.o
+test64-zce.o: test64-zce.s
+	riscv64-unknown-linux-gnu-gcc $(FLAGS) -march=rv64g_zbb_zba_zca_zcb_zcmp_zcmt -mabi=lp64d -c $< -o $@
+run64-zce: test64-zce.img
+	$(QEMU64) -cpu rv64,zcd=false,zca=true,zcb=true,zcmp=true,zbb=true,zba=true,zcmt=true -M virt -bios none -serial stdio -display none -kernel test64-zce.img
+gdb64-zce: test64-zce.img
+	$(QEMU64) -cpu rv64,zcd=false,zce=true,zcb=true,zcmp=true,zbb=true,zba=true -s -S -M virt -bios none -serial stdio -display none -kernel test64-zce.img
+
+# 32 bit testcase for zce
+test32-zce.img: test32-zce.elf
+	riscv64-unknown-linux-gnu-objcopy test32-zce.elf -I binary test32-zce.img
+	riscv64-unknown-linux-gnu-objdump -d test32-zce.elf > test32-zce.asm
+test32-zce.elf: test32-zce.o link.ld Makefile
+	riscv64-unknown-linux-gnu-ld -m elf32lriscv_ilp32 -T link.ld -o test32-zce.elf test32-zce.o
+test32-zce.o: test32-zce.s
+	riscv64-unknown-linux-gnu-gcc $(FLAGS) -march=rv32g_zbb_zba_zca_zcb_zcmp_zcmt -mabi=ilp32d -c $< -o $@
+run32-zce: test32-zce.img
+	$(QEMU32) -cpu rv32,zcd=false,zca=true,zcb=true,zcmp=true,zbb=true,zba=true,zcmt=true -M virt -bios none -serial stdio -display none -kernel test32-zce.img
+gdb32-zce: test32-zce.img
+	$(QEMU32) -cpu rv32,zcd=false,zce=true,zcb=true,zcmp=true,zbb=true,zba=true,zcmt=true -s -S -M virt -bios none -serial stdio -display none -kernel test32-zce.img
+
+# 64 bit testcase for B
+test64-B.img: test64-B.elf
+	riscv64-unknown-linux-gnu-objcopy test64-B.elf -I binary test64-B.img
+	riscv64-unknown-linux-gnu-objdump -d test64-B.elf > test64-B.asm
+test64-B.elf: test64-B.o link.ld Makefile
+	riscv64-unknown-linux-gnu-ld -T link.ld -o test64-B.elf test64-B.o
+test64-B.o: test64-B.s
+	riscv64-unknown-linux-gnu-gcc $(FLAGS) -march=rv64g_zba_zbb_zbc_zbs -mabi=lp64d -c $< -o $@
+run64-B: test64-B.img
+	$(QEMU64) -cpu rv64,zba=true,zbb=true,zbc=true,zbs=true -M virt -bios none -serial stdio -display none -kernel test64-B.img
+gdb64-B: test64-B.img
+	$(QEMU64) -cpu rv64,zba=true,zbb=true,zbc=true,zbs=true -s -S -M virt -bios none -serial stdio -display none -kernel test64-B.img
+
+# 32 bit testcase for B
+test32-B.img: test32-B.elf
+	riscv64-unknown-linux-gnu-objcopy test32-B.elf -I binary test32-B.img
+	riscv64-unknown-linux-gnu-objdump -d test32-B.elf > test32-B.asm
+test32-B.elf: test32-B.o link.ld Makefile
+	riscv64-unknown-linux-gnu-ld -m elf32lriscv_ilp32 -T link.ld -o test32-B.elf test32-B.o
+test32-B.o: test32-B.s
+	riscv64-unknown-linux-gnu-gcc $(FLAGS) -march=rv32g_zba_zbb_zbc_zbs -mabi=ilp32d -c $< -o $@
+run32-B: test32-B.img
+	$(QEMU32) -cpu rv32,zba=true,zbb=true,zbc=true,zbs=true -M virt -bios none -serial stdio -display none -kernel test32-B.img
+gdb32-B: test32-B.img
+	$(QEMU32) -cpu rv32,zba=true,zbb=true,zbc=true,zbs=true -s -S -M virt -bios none -serial stdio -display none -kernel test32-B.img
+
+
+
+# clean
+
+clean:
+	rm -f *.o test64.elf test64.img test64.asm test64.o test32.elf test32.img test32.asm test32.o
