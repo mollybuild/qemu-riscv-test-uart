@@ -1,32 +1,44 @@
-# QEMU Test for RISC-V P Extension
+# QEMU Test for RISC-V B,K,P,Zce,Zfinx Extension
 
 ## 1\. GCC Toolchain
 
-Get toolchain from plct-lab:
+Toolchain for B,K,Zce,Zfinx (gcc version >= 15):
 
 ```bash
-$ cd ~
-$ git clone https://github.com/riscv-collab/riscv-gnu-toolchain.git
-$ git clone https://github.com/plctlab/riscv-gcc.git -b riscv-gcc-p-ext
-$ git clone https://github.com/plctlab/riscv-binutils-gdb.git -b riscv-binutils-p-ext
+git clone https://github.com/riscv-collab/riscv-gnu-toolchain.git
 ```
 
-Configure:
+Toolchain for 0.9.11 P:
+
+```bash
+$ git clone https://github.com/riscv-collab/riscv-gnu-toolchain.git && cd riscv-gnu-toolchain
+$ mv gcc gcc.bak $$ mv binutils binutils.bak
+$ git clone https://github.com/plctlab/riscv-gcc.git -b riscv-gcc-p-ext gcc
+$ git clone https://github.com/plctlab/riscv-binutils-gdb.git -b riscv-binutils-p-ext binutils
+```
+
+Toolchain for J.Hauser P:
+
+```bash
+$ git clone https://github.com/riscv-collab/riscv-gnu-toolchain.git && cd riscv-gnu-toolchain
+$ mv gcc gcc.bak $$ mv binutils binutils.bak
+$ git clone https://github.com/ruyisdk/riscv-gcc.git -b p-dev gcc
+$ git clone https://github.com/ruyisdk/riscv-binutils.git -b p-dev binutils
+```
+
+Configure for P extension:
 
 ```bash
 $ cd riscv-gnu-toolchain
-# 64bit:
-$ ./configure --prefix=/path/to/64bit/toolchain --with-arch=rv64gp --with-abi=lp64d --with-gcc-src=/home/*username*/riscv-gcc --with-binutils-src=/home/*username*/riscv-binutils-gdb
-# or 32bit:
-$ ./configure --prefix=/path/to/32bit/toolchain --with-arch=rv32gp --with-abi=ilp32 --with-gcc-src=/home/*username*/riscv-gcc --with-binutils-src=/home/*username*/riscv-binutils-gdb
+$ ./configure --prefix=/path/to//toolchain
 ```
 
-`--prefix` set the install path for toolchain, `--with-gcc` and `--with-binutils-src` set the path of gcc and gdb cloned before.
+`--prefix` set the install path for toolchain.
 
 Compile toolchain:
 
 ```bash
-$ make linux -j16
+$ make linux -j$(nproc)
 ```
 
 Add to path:
@@ -36,33 +48,36 @@ $ export PATH=$PATH:/path/to/toolchain/bin
 
 ## 2\. QEMU
 
+QEMU support B,K,Zce,Zfinx: https://gitlab.com/qemu-project/qemu.git
+
+QEMU support 0.9.11 P: https://github.com/plctlab/plct-qemu.git -b plct-rvp
+
+QEMU support J.Hauser P: https://github.com/mollybuild/qemu
+
 ```bash
-$ cd ~
-$ git clone https://github.com/plctlab/plct-qemu.git -b plct-rvp
-$ cd plct-qemu
 $ ./configure --target-list=riscv64-softmmu,riscv32-softmmu,riscv64-linux-user,riscv32-linux-user
-$ make -j16
+$ make -j$(nproc)
 ```
 
-## 4\. Run testcases
+## 3\. Run testcases
 
 Get testcases(this respository):
 
 ```bash
 $ cd ~
-$ git clone https://github.com/dajunHuang/riscv-hello-uart.git
+$ git clone https://github.com/mollybuild/qemu-riscv-test-uart.git
 ```
 
 Change the paths of qemu in Makefile:
 ```Makefile
-QEMU64	= /home/dajunhuang/plct-qemu/build/qemu-system-riscv64
-QEMU32	= /home/dajunhuang/plct-qemu/build/qemu-system-riscv32
+QEMU64	= /path/to/qemu-system-riscv64
+QEMU32	= /path/to/qemu-system-riscv32
 ```
 
 Run testcases:
 
 ```bash
-$ make run64
+$ make run64-P
 passed!
 ```
 
