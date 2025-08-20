@@ -21,7 +21,7 @@ Toolchain for J.Hauser P:
 
 ```bash
 $ git clone https://github.com/riscv-collab/riscv-gnu-toolchain.git && cd riscv-gnu-toolchain
-$ mv gcc gcc.bak $$ mv binutils binutils.bak
+$ mv gcc gcc.bak && mv binutils binutils.bak
 $ git clone https://github.com/ruyisdk/riscv-gcc.git -b p-dev gcc
 $ git clone https://github.com/ruyisdk/riscv-binutils.git -b p-dev binutils
 ```
