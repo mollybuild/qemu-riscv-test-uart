@@ -71,8 +71,8 @@ test64-zce.o: test64-zce.s
 test64-B.o: test64-B.s
 	$(CC64) $(FLAGS) $(ARCH64_B) -c $< -o $@
 
-test64-P.o: test64-p.s
-        $(CC64) $(FLAGS) $(ARCH64_P) -c $< -o $@
+test64-P.o: test64-P.s
+	$(CC64) $(FLAGS) $(ARCH64_P) -c $< -o $@
 
 test32.o: test32.s
 	$(CC32) $(FLAGS) $(ARCH32_BASE) -c $< -o $@
@@ -89,8 +89,8 @@ test32-zce.o: test32-zce.s
 test32-B.o: test32-B.s
 	$(CC32) $(FLAGS) $(ARCH32_B) -c $< -o $@
 
-test32-P.o: test32-p.s
-        $(CC32) $(FLAGS) $(ARCH32_P) -c $< -o $@
+test32-P.o: test32-P.s
+	$(CC32) $(FLAGS) $(ARCH32_P) -c $< -o $@
 
 # Run targets
 run64: test64.img
@@ -124,10 +124,10 @@ run32-B: test32-B.img
 	$(QEMU32) -cpu $(CPU32_B) $(QEMU_COMMON) -kernel $<
 
 run64-P: test64-P.img
-        $(QEMU64) -cpu $(CPU64_P) $(QEMU_COMMON) -kernel $<
+	$(QEMU64) -cpu $(CPU64_P) $(QEMU_COMMON) -kernel $<
 
 run32-P: test32-P.img
-        $(QEMU32) -cpu $(CPU32_P) $(QEMU_COMMON) -kernel $<
+	$(QEMU32) -cpu $(CPU32_P) $(QEMU_COMMON) -kernel $<
 
 # GDB targets (similar pattern as run targets)
 gdb64: test64.img
