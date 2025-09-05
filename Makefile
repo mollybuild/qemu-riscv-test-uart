@@ -1,14 +1,14 @@
 # Tool paths
 QEMU64   = /opt/qemu/bin/qemu-system-riscv64
 QEMU32   = /opt/qemu/bin/qemu-system-riscv32
-CC64     = /opt/riscv/bin/riscv64-unknown-linux-gnu-gcc
-LD64     = /opt/riscv/bin/riscv64-unknown-linux-gnu-ld
-OBJCOPY64 = /opt/riscv/bin/riscv64-unknown-linux-gnu-objcopy
-OBJDUMP64 = /opt/riscv/bin/riscv64-unknown-linux-gnu-objdump
-CC32     = /opt/riscv32-main/bin/riscv32-unknown-linux-gnu-gcc
-LD32     = /opt/riscv32-main/bin/riscv32-unknown-linux-gnu-ld
-OBJCOPY32 = /opt/riscv32-main/bin/riscv32-unknown-linux-gnu-objcopy
-OBJDUMP32 = /opt/riscv32-main/bin/riscv32-unknown-linux-gnu-objdump
+CC64     = /opt/riscv64/bin/riscv64-unknown-linux-gnu-gcc
+LD64     = /opt/riscv64/bin/riscv64-unknown-linux-gnu-ld
+OBJCOPY64 = /opt/riscv64/bin/riscv64-unknown-linux-gnu-objcopy
+OBJDUMP64 = /opt/riscv64/bin/riscv64-unknown-linux-gnu-objdump
+CC32     = /opt/riscv32/bin/riscv32-unknown-linux-gnu-gcc
+LD32     = /opt/riscv32/bin/riscv32-unknown-linux-gnu-ld
+OBJCOPY32 = /opt/riscv32/bin/riscv32-unknown-linux-gnu-objcopy
+OBJDUMP32 = /opt/riscv32/bin/riscv32-unknown-linux-gnu-objdump
 
 # Common flags
 FLAGS    = -nostartfiles -g
@@ -59,7 +59,7 @@ test32-%.elf: test32-%.o link.ld Makefile
 	$(LD32)  -T link.ld -o $@ $<
 
 # Compilation rules for different extensions
-test64-k.o: test64-k.s
+test64-K.o: test64-K.s
 	$(CC64) $(FLAGS) $(ARCH64_K) -c $< -o $@
 
 test64-zfinx.o: test64-zfinx.s
@@ -77,7 +77,7 @@ test64-P.o: test64-p.s
 test32.o: test32.s
 	$(CC32) $(FLAGS) $(ARCH32_BASE) -c $< -o $@
 
-test32-k.o: test32-k.s
+test32-K.o: test32-K.s
 	$(CC32) $(FLAGS) $(ARCH32_K) -c $< -o $@
 
 test32-zfinx.o: test32-zfinx.s
@@ -99,10 +99,10 @@ run64: test64.img
 run32: test32.img
 	$(QEMU32) -cpu $(CPU32_B) $(QEMU_COMMON) -kernel $<
 
-run64-k: test64-k.img
+run64-K: test64-K.img
 	$(QEMU64) -cpu $(CPU64_K) $(QEMU_COMMON) -kernel $<
 
-run32-k: test32-k.img
+run32-K: test32-K.img
 	$(QEMU32) -cpu $(CPU32_K) $(QEMU_COMMON) -kernel $<
 
 run64-zfinx: test64-zfinx.img
