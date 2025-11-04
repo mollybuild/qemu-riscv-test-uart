@@ -1430,11 +1430,6 @@ _start:
     mulsr64 s10, s6, s7
     bne s10, s8, print_error
 
-    # test64.s:1433: Error: unrecognized opcode `maxw s10,s6,s7'
-    # teset64.s:1434: Error: unrecognized opcode `mminw s10,s6,s7'
-    # maxw s10, s6, s7
-    # mminw s10, s6, s7
-
     # ave
     li s6, 0x7FFFFFFFFFFFFFFF
     li s7, 0x7FFFFFFFFFFFFFFF

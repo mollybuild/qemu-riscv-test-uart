@@ -1,11 +1,13 @@
 # Tool paths
-QEMU64   = /opt/qemu/bin/qemu-system-riscv64
-QEMU32   = /opt/qemu/bin/qemu-system-riscv32
+QEMU64   = /opt/plct-qemu/bin/qemu-system-riscv64
+QEMU32   = /opt/plct-qemu/bin/qemu-system-riscv32
 CC64     = /opt/riscv64/bin/riscv64-unknown-linux-gnu-gcc
+AS64     = /opt/riscv64/bin/riscv64-unknown-linux-gnu-as
 LD64     = /opt/riscv64/bin/riscv64-unknown-linux-gnu-ld
 OBJCOPY64 = /opt/riscv64/bin/riscv64-unknown-linux-gnu-objcopy
 OBJDUMP64 = /opt/riscv64/bin/riscv64-unknown-linux-gnu-objdump
 CC32     = /opt/riscv32/bin/riscv32-unknown-linux-gnu-gcc
+AS32     = /opt/riscv32/bin/riscv32-unknown-linux-gnu-as 
 LD32     = /opt/riscv32/bin/riscv32-unknown-linux-gnu-ld
 OBJCOPY32 = /opt/riscv32/bin/riscv32-unknown-linux-gnu-objcopy
 OBJDUMP32 = /opt/riscv32/bin/riscv32-unknown-linux-gnu-objdump
@@ -21,18 +23,22 @@ ARCH64_K      = -march=rv64gc_zbkb_zbkc_zbkx_zknd_zkne_zknh_zksed_zksh -mabi=lp6
 ARCH32_K      = -march=rv32gc_zbkb_zbkc_zbkx_zknd_zkne_zknh_zksed_zksh -mabi=ilp32d
 ARCH64_ZFINX  = -march=rv64imac_zfinx -mabi=lp64
 ARCH32_ZFINX  = -march=rv32imac_zfinx -mabi=ilp32
+ARCH64_ZDINX  = -march=rv64imac_zdinx -mabi=lp64
+ARCH32_ZDINX  = -march=rv32imac_zdinx -mabi=ilp32
 ARCH64_ZCE    = -march=rv64g_zbb_zba_zca_zcb_zcmp_zcmt -mabi=lp64d
 ARCH32_ZCE    = -march=rv32g_zbb_zba_zca_zcb_zcmp_zcmt -mabi=ilp32d
 ARCH64_B      = -march=rv64g_zba_zbb_zbc_zbs -mabi=lp64d
 ARCH32_B      = -march=rv32g_zba_zbb_zbc_zbs -mabi=ilp32d
-ARCH64_P      = -march=rv64gp -mabi=lp64d
-ARCH32_P      = -march=rv32gp -mabi=ilp32
+ARCH64_P      = -march=rv64gc_zbpbo_zpn_zpsfoperand -mabi=lp64d
+ARCH32_P      = -march=rv32gc_zbpbo_zpn_zpsfoperand -mabi=ilp32
 
 # CPU options
 CPU64_K      = rv64,zbkb=true,zbkc=true,zbkx=true,zknd=true,zkne=true,zknh=true,zksed=true,zksh=true
 CPU32_K      = rv32,zbkb=true,zbkc=true,zbkx=true,zknd=true,zkne=true,zknh=true,zksed=true,zksh=true
 CPU64_ZFINX  = rv64,f=false,d=false,zfa=false,zfinx=true
 CPU32_ZFINX  = rv32,f=false,d=false,zfa=false,zfinx=true
+CPU64_ZDINX  = rv64,f=false,d=false,zfa=false,zfinx=true,zdinx=true
+CPU32_ZDINX  = rv32,f=false,d=false,zfa=false,zfinx=true,zdinx=true
 CPU64_ZCE    = rv64,zcd=false,zca=true,zcb=true,zcmp=true,zbb=true,zba=true,zcmt=true
 CPU32_ZCE    = rv32,zcd=false,zca=true,zcb=true,zcmp=true,zbb=true,zba=true,zcmt=true
 CPU64_B      = rv64,zba=true,zbb=true,zbc=true,zbs=true
@@ -65,6 +71,9 @@ test64-K.o: test64-K.s
 test64-zfinx.o: test64-zfinx.s
 	$(CC64) $(FLAGS) $(ARCH64_ZFINX) -c $< -o $@
 
+test64-zdinx.o: test64-zdinx.s
+	$(CC64) $(FLAGS) $(ARCH64_ZDINX) -c $< -o $@
+
 test64-zce.o: test64-zce.s
 	$(CC64) $(FLAGS) $(ARCH64_ZCE) -c $< -o $@
 
@@ -72,7 +81,7 @@ test64-B.o: test64-B.s
 	$(CC64) $(FLAGS) $(ARCH64_B) -c $< -o $@
 
 test64-P.o: test64-P.s
-	$(CC64) $(FLAGS) $(ARCH64_P) -c $< -o $@
+	$(AS64) $(ARCH64_P) -c $< -o $@
 
 test32.o: test32.s
 	$(CC32) $(FLAGS) $(ARCH32_BASE) -c $< -o $@
@@ -83,6 +92,9 @@ test32-K.o: test32-K.s
 test32-zfinx.o: test32-zfinx.s
 	$(CC32) $(FLAGS) $(ARCH32_ZFINX) -c $< -o $@
 
+test32-zdinx.o: test32-zfinx.s
+	$(CC32) $(FLAGS) $(ARCH32_ZDINX) -c $< -o $@
+
 test32-zce.o: test32-zce.s
 	$(CC32) $(FLAGS) $(ARCH32_ZCE) -c $< -o $@
 
@@ -90,7 +102,7 @@ test32-B.o: test32-B.s
 	$(CC32) $(FLAGS) $(ARCH32_B) -c $< -o $@
 
 test32-P.o: test32-P.s
-	$(CC32) $(FLAGS) $(ARCH32_P) -c $< -o $@
+	$(AS32) $(ARCH32_P) -c $< -o $@
 
 # Run targets
 run64: test64.img
@@ -110,6 +122,12 @@ run64-zfinx: test64-zfinx.img
 
 run32-zfinx: test32-zfinx.img
 	$(QEMU32) -cpu $(CPU32_ZFINX) $(QEMU_COMMON) -kernel $<
+
+run64-zdinx: test64-zdinx.img
+	$(QEMU64) -cpu $(CPU64_ZDINX) $(QEMU_COMMON) -kernel $<
+
+run32-zdinx: test32-zdinx.img
+	$(QEMU32) -cpu $(CPU32_ZDINX) $(QEMU_COMMON) -kernel $<
 
 run64-zce: test64-zce.img
 	$(QEMU64) -cpu $(CPU64_ZCE) $(QEMU_COMMON) -kernel $<

@@ -90,12 +90,30 @@ _start:
 
     # test in zbkb
     # rev8
+    li a0, 0x80780001 # rs1
+    li a2, 0x01007880 # expected result
+    rev8 a4,a0
+    bne a4, a2, print_error
     
     # rol
+    li a0, 0x80780001 # rs1
+    li a5, 0x00030001 # rs2
+    li a2, 0x00F00003 # expected result
+    rol a4,a0,a5
+    bne a4, a2, print_error
 
     # ror
+    li a0, 0x80780001 # rs1
+    li a5, 0x00030001 # rs2
+    li a2, 0xC03C0000 # expected result
+    ror a4,a0,a5
+    bne a4, a2, print_error
 
     # rori
+    li a0, 0x80780001 # rs1
+    li a2, 0x300F0000 # expected result
+    rori a4,a0,3
+    bne a4, a2, print_error
 
     # bclr
     li a0, 0x80780001 # rs1

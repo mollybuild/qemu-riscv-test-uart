@@ -2,178 +2,178 @@
 
 _start:
     # FMADD.S
-    li s5, 0xFFFFFFFFBF000000 # -0.5
-    li s6, 0x000000003FC00000 # rs1=1.5
-    li s7, 0x000000003FC00000 # rs2=1.5
-    li s8, 0x000000003FE00000 # expected result =1.75
+    li s5, 0x7F12000300000000
+    li s6, 0x7F120003FF780001 # rs1
+    li s7, 0x3 # rs2
+    li s8, 0xffffffffb5ba0001 # expected result
     fmadd.s s9,s6,s7,s5 # s9=(s6*s7)+s5
     bne s9, s8, print_error
 
     # FMSUB.S
-    li s5, 0xFFFFFFFFBF000000
-    li s6, 0x000000003FC00000 # rs1
-    li s7, 0x000000003FC00000 # rs2
-    li s8, 0x0000000040300000 # expected result =2.75 
+    li s5, 0x7F12000300000000
+    li s6, 0x7F120003FF780001 # rs1
+    li s7, 0x3 # rs2
+    li s8, 0xffffffffb5ba0001 # expected result
     fmsub.s s9,s6,s7,s5 # s9=(s6*s7)-s5
     bne s9, s8, print_error
 
     # FNMSUB.S
-    li s5, 0xFFFFFFFFBF000000
-    li s6, 0x000000003FC00000 # rs1
-    li s7, 0x000000003FC00000 # rs2
-    li s8, 0xFFFFFFFFC0300000 # expected result = -2.75
+    li s5, 0x7F12000300000000
+    li s6, 0x7F120003FF780001 # rs1
+    li s7, 0x3 # rs2
+    li s8, 0x0000000035ba0001 # expected result
     fnmsub.s s9,s6,s7,s5 # s9=-(s6*s7)+s5
     bne s9, s8, print_error
 
     # FNMADD.S
-    li s5, 0xFFFFFFFFBF000000
-    li s6, 0x000000003FC00000 # rs1
-    li s7, 0x000000003FC00000 # rs2
-    li s8, 0xFFFFFFFFBFE00000 # expected result = -1.75
+    li s5, 0x7F12000300000000
+    li s6, 0x7F120003FF780001 # rs1
+    li s7, 0x3 # rs2
+    li s8, 0x0000000035ba0001 # expected result
     fnmadd.s s9,s6,s7,s5 # s9=-(s6*s7)-s5
     bne s9, s8, print_error
     
     # FADD.S
-    li s6, 0xFFFFFFFFBF000000 # rs1
-    li s7, 0x000000003FC00000 # rs2
-    li s8, 0x000000003F800000 # expected result = 1
+    li s6, 0x7F120003FF780001 # rs1
+    li s7, 0x3 # rs2
+    li s8, 0xffffffffff780001 # expected result
     fadd.s s9, s6, s7
     bne s9, s8, print_error
 
     # FSUB.S
-    li s6, 0xFFFFFFFFBF000000 # rs1
-    li s7, 0x000000003FC00000 # rs2
-    li s8, 0xFFFFFFFFC0000000 # expected result
+    li s6, 0x7F120003FF780001 # rs1
+    li s7, 0x3 # rs2
+    li s8, 0xffffffffff780001 # expected result
     fsub.s s9, s6, s7
     bne s9, s8, print_error
 
     # FMUL.S
-    li s6, 0xFFFFFFFFBF000000 # rs1
-    li s7, 0x000000003FC00000 # rs2
-    li s8, 0xFFFFFFFFBF400000 # expected result
+    li s6, 0x7F120003FF780001 # rs1
+    li s7, 0x3 # rs2
+    li s8, 0xffffffffb5ba0001 # expected result
     fmul.s s9, s6, s7
     bne s9, s8, print_error
 
     # FDIV.S
-    li s6, 0xFFFFFFFFBF000000 # rs -0.5
-    li s7, 0x000000003F800000 # rs2 1
-    li s8, 0xFFFFFFFFBF000000 # expected result -0.5
+    li s6, 0x7F120003FF780001 # rs1
+    li s7, 0x3 # rs2
+    li s8, 0xffffffffff800000 # expected result
     fdiv.s s9, s6, s7
     bne s9, s8, print_error
 
     # FSQRT.S
-    li s6, 0x0000000040100000 # rs1 2.25
-    li s8, 0x000000003FC00000 # expected result
+    li s6, 0x7F120003FF780001 # rs1
+    li s8, 0x000000007fc00000 # expected result
     fsqrt.s s9, s6
     bne s9, s8, print_error
 
     # FSGNJ.S
-    li s6, 0xFFFFFFFFBF000000 # rs1 -0.5
-    li s7, 0x000000003FC00000 # rs2 1.5
-    li s8, 0x000000003F000000 # expected result
+    li s6, 0x7F120003FF780001 # rs1
+    li s7, 0x3 # rs2
+    li s8, 0x000000007f780001 # expected result
     fsgnj.s s9, s6, s7
     bne s9, s8, print_error
 
     # FSGNJN.S
-    li s6, 0xFFFFFFFFBF000000 # rs1
-    li s7, 0x000000003FC00000 # rs2
-    li s8, 0xFFFFFFFFBF000000 # expected result
+    li s6, 0x7F120003FF780001 # rs1
+    li s7, 0x3 # rs2
+    li s8, 0xffffffffff780001 # expected result
     fsgnjn.s s9, s6, s7
     bne s9, s8, print_error
 
     # FSGNJX.S
-    li s6, 0xFFFFFFFFBF000000 # rs1
-    li s7, 0x000000003FC00000 # rs2
-    li s8, 0xFFFFFFFFBF000000 # expected result
+    li s6, 0x7F120003FF780001 # rs1
+    li s7, 0x3 # rs2
+    li s8, 0xffffffffff780001 # expected result
     fsgnjx.s s9, s6, s7
     bne s9, s8, print_error
 
     # FMIN.S
-    li s6, 0xFFFFFFFFBF000000 # rs1
-    li s7, 0x000000003FC00000 # rs2
-    li s8, 0xFFFFFFFFBF000000 # expected result
+    li s6, 0x7F120003FF780001 # rs1
+    li s7, 0x3 # rs2
+    li s8, 0xffffffffff780001 # expected result
     fmin.s s9, s6, s7
     bne s9, s8, print_error
 
     # FMAX.S
-    li s6, 0xFFFFFFFFBF000000 # rs1
-    li s7, 0x000000003FC00000 # rs2
-    li s8, 0x000000003FC00000 # expected result
+    li s6, 0x7F120003FF780001 # rs1
+    li s7, 0x3 # rs2
+    li s8, 0x0000000000000003 # expected result
     fmax.s s9, s6, s7
     bne s9, s8, print_error
 
     # FCVT.W.S
-    li s6, 0xFFFFFFFFBF000000 # rs1
-    li s8, 0x0000000000000000 # expected result
+    li s6, 0x7F120003FF780001 # rs1
+    li s8, 0xffffffff80000000 # expected result
     fcvt.w.s s9, s6
     bne s9, s8, print_error
 
     # FCVT.WU.S
-    li s6, 0xFFFFFFFFBF000000 # rs1
+    li s6, 0x7F120003FF780001 # rs1
     li s8, 0x0000000000000000 # expected result
     fcvt.wu.s s9, s6
     bne s9, s8, print_error
 
     # FEQ.S
-    li s6, 0xFFFFFFFFBF000000 # rs1
-    li s7, 0x000000003FC00000 # rs2
+    li s6, 0x7F120003FF780001 # rs1
+    li s7, 0x3 # rs2
     li s8, 0x0000000000000000 # expected result
     feq.s s9, s6, s7
     bne s9, s8, print_error
 
     # FLT.S
-    li s6, 0xFFFFFFFFBF000000 # rs1i
-    li s7, 0x000000003FC00000 # rs2
+    li s6, 0x7F120003FF780001 # rs1i
+    li s7, 0x3 # rs2
     li s8, 0x0000000000000001 # expected result
     flt.s s9, s6, s7
     bne s9, s8, print_error
 
     # FLE.S
-    li s6, 0xFFFFFFFFBF000000 # rs1
-    li s7, 0x000000003FC00000 # rs2
+    li s6, 0x7F120003FF780001 # rs1
+    li s7, 0x3 # rs2
     li s8, 0x0000000000000001 # expected result
     fle.s s9, s6, s7
     bne s9, s8, print_error
 
     # FCLASS.S
-    li s6, 0xFFFFFFFFBF000000 # rs1
+    li s6, 0x7F120003FF780001 # rs1
     li s8, 0x0000000000000002 # expected result
     fclass.s s9, s6
     bne s9, s8, print_error
 
     # FCVT.S.W
-    li s6, 0x0000000000000001 # rs1
-    li s8, 0x000000003F800000 # expected result
+    li s6, 0x7F120003FF780001 # rs1
+    li s8, 0xffffffffcb07ffff # expected result
     fcvt.s.w s9, s6
     bne s9, s8, print_error
 
     # FCVT.S.WU
-    li s6, 0x0000000000000001 # rs1
-    li s8, 0x000000003F800000 # expected result
+    li s6, 0x7F120003FF780001 # rs1
+    li s8, 0x000000004f7f7800 # expected result
     fcvt.s.wu s9, s6
     bne s9, s8, print_error
 
     # FCVT.L.S
-    li s6, 0xFFFFFFFFBF000000 # rs1
-    li s8, 0x0000000000000000 # expected result
+    li s6, 0x7F120003FF780001 # rs1
+    li s8, 0x8000000000000000 # expected result
     fcvt.l.s s9, s6
     bne s9, s8, print_error
 
     # FCVT.LU.S
-    li s6, 0xFFFFFFFFBF000000 # rs1
+    li s6, 0x7F120003FF780001 # rs1
     li s8, 0x0000000000000000 # expected result
     fcvt.lu.s s9, s6
     bne s9, s8, print_error
 
     # FCVT.S.L
-    li s6, 0x0000000000000001 # rs1
-    li s8, 0x000000003F800000 # expected result
+    li s6, 0x7F120003FF780001 # rs1
+    li s8, 0x000000005efe2400 # expected result
     fcvt.s.l s9, s6
     bne s9, s8, print_error
 
     # FCVT.S.LU
-    li s6, 0x0000000000000001 # rs1
-    li s8, 0x000000003F800000 # expected result
+    li s6, 0x7F120003FF780001 # rs1
+    li s8, 0x000000005efe2400 # expected result
     fcvt.s.lu s9, s6
     bne s9, s8, print_error
 

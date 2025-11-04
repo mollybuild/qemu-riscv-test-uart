@@ -720,12 +720,13 @@ _start:
     zunpkd832 s9, s6
     bne s9, s8, print_error 
 
-    # # pkbb16
-    # li s6, 0x44443333 # rs1
-    # li s7, 0x88887777 # rs2
-    # li s8, 0x33337777 # expected result
-    # pkbb16 s9, s6, s7
-    # bne s9, s8, print_error
+    # pkbb16 for rv32 is not supported by assembler,
+    # for it's replaced with PACK in Zbpbo.
+    #li s6, 0x44443333 # rs1
+    #li s7, 0x88887777 # rs2
+    #li s8, 0x33337777 # expected result
+    #pkbb16 s9, s6, s7
+    #bne s9, s8, print_error
 
     # pkbt16
     li s6, 0x44443333 # rs1
@@ -741,19 +742,20 @@ _start:
     pktb16 s9, s6, s7
     bne s9, s8, print_error
 
-    # # pktt16
+    # pktt16 for rv32 is not supported by assembler,
+    # for it's replaced with PACKU in Zbpbo.
     # li s6, 0x44443333 # rs1
     # li s7, 0x88887777 # rs2
     # li s8, 0x44448888 # expected result
     # pktt16 s9, s6, s7
     # bne s9, s8, print_error
 
-    # # smmul
-    # li s6, 0x00000001 # rs1
-    # li s7, 0xFFFFFFFF # rs2
-    # li s8, 0xFFFFFFFF # expected result
-    # smmul s9, s6, s7
-    # bne s9, s8, print_error
+    # smmul for rv32 is replaced with mulh in RV32M.
+    #li s6, 0x00000001 # rs1
+    #li s7, 0xFFFFFFFF # rs2
+    #li s8, 0xFFFFFFFF # expected result
+    #smmul s9, s6, s7
+    #bne s9, s8, print_error
 
     # smmul_u
     li s6, 0x00000001 # rs1

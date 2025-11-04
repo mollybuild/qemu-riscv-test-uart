@@ -114,19 +114,52 @@ _start:
     bne a4, a2, print_error
 
     # test in zbkb
-    # rev8
     
-    # rol
-
     # rolw
-
-    # ror
-
-    # rori
+    li a0, 0xF01D460080780001 # rs1
+    li a5, 0x0000000000030001 # rs2
+    li a2, 0x0000000000F00003# expected result
+    rolw a4,a0,a5
+    bne a4, a2, print_error
 
     # roriw
+    li a0, 0xF01D460080780001 # rs1
+    li a2, 0x00000000300F0000 # expected result
+    roriw a4,a0,3
+    bne a4, a2, print_error
 
     # rorw
+    li a0, 0xF01D460080780001 # rs1
+    li a5, 0x0000000000030001 # rs2
+    li a2, 0xFFFFFFFFC03C0000 # expected result
+    rorw a4,a0,a5
+    bne a4, a2, print_error
+
+    # rev8
+    li a0, 0xF01D460080780001 # rs1
+    li a2, 0x0100788000461DF0 # expected result
+    rev8 a4,a0
+    bne a4, a2, print_error
+
+    # rol
+    li a0, 0xF01D460080780001 # rs1
+    li a5, 0x0000000000030001 # rs2
+    li a2, 0xE03A8C0100F00003 # expected result
+    rol a4,a0,a5
+    bne a4, a2, print_error
+
+    # ror
+    li a0, 0xF01D460080780001 # rs1
+    li a5, 0x0000000000030001 # rs2
+    li a2, 0xF80EA300403C0000 # expected result
+    ror a4,a0,a5
+    bne a4, a2, print_error
+
+    # rori
+    li a0, 0xF01D460080780001 # rs1
+    li a2, 0x3E03A8C0100F0000 # expected result
+    rori a4,a0,3
+    bne a4, a2, print_error
 
     # bclr
     li a0, 0xF01D460080780001 # rs1
