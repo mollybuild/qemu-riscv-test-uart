@@ -1,4 +1,5 @@
 # Tool paths
+<<<<<<< HEAD
 QEMU64   = /opt/plct-qemu/bin/qemu-system-riscv64
 QEMU32   = /opt/plct-qemu/bin/qemu-system-riscv32
 CC64     = /opt/riscv64/bin/riscv64-unknown-linux-gnu-gcc
@@ -13,7 +14,8 @@ OBJCOPY32 = /opt/riscv32/bin/riscv32-unknown-linux-gnu-objcopy
 OBJDUMP32 = /opt/riscv32/bin/riscv32-unknown-linux-gnu-objdump
 
 # Common flags
-FLAGS    = -nostartfiles -g
+# FLAGS    = -nostartfiles -g
+FLAGS    = -nostartfiles -g -menable-experimental-extensions
 QEMU_COMMON = -M virt -bios none -serial stdio -display none
 
 # Architecture options
@@ -29,8 +31,9 @@ ARCH64_ZCE    = -march=rv64g_zbb_zba_zca_zcb_zcmp_zcmt -mabi=lp64d
 ARCH32_ZCE    = -march=rv32g_zbb_zba_zca_zcb_zcmp_zcmt -mabi=ilp32d
 ARCH64_B      = -march=rv64g_zba_zbb_zbc_zbs -mabi=lp64d
 ARCH32_B      = -march=rv32g_zba_zbb_zbc_zbs -mabi=ilp32d
-ARCH64_P      = -march=rv64gc_zbpbo_zpn_zpsfoperand -mabi=lp64d
-ARCH32_P      = -march=rv32gc_zbpbo_zpn_zpsfoperand -mabi=ilp32
+ARCH64_P      = -march=rv64gp -mabi=lp64d
+# ARCH32_P      = -march=rv32gp -mabi=ilp32
+ARCH32_P      = -march=rv32gp0p15 -mabi=ilp32
 
 # CPU options
 CPU64_K      = rv64,zbkb=true,zbkc=true,zbkx=true,zknd=true,zkne=true,zknh=true,zksed=true,zksh=true
@@ -80,8 +83,11 @@ test64-zce.o: test64-zce.s
 test64-B.o: test64-B.s
 	$(CC64) $(FLAGS) $(ARCH64_B) -c $< -o $@
 
-test64-P.o: test64-P.s
-	$(AS64) $(ARCH64_P) -c $< -o $@
+test64-P.o: test64-p.s
+	$(CC64) $(FLAGS) $(ARCH64_P) -c $< -o $@
+
+test64-jhauser.o: test64-jhauser.s
+	$(CC64) $(FLAGS) $(ARCH64_P) -c $< -o $@
 
 test32.o: test32.s
 	$(CC32) $(FLAGS) $(ARCH32_BASE) -c $< -o $@
@@ -101,8 +107,11 @@ test32-zce.o: test32-zce.s
 test32-B.o: test32-B.s
 	$(CC32) $(FLAGS) $(ARCH32_B) -c $< -o $@
 
-test32-P.o: test32-P.s
-	$(AS32) $(ARCH32_P) -c $< -o $@
+test32-P.o: test32-p.s
+	$(CC32) $(FLAGS) $(ARCH32_P) -c $< -o $@
+
+test32-jhauser.o: test32-jhauser.s
+	$(CC32) $(FLAGS) $(ARCH32_P) -c $< -o $@
 
 # Run targets
 run64: test64.img
@@ -147,12 +156,18 @@ run64-P: test64-P.img
 run32-P: test32-P.img
 	$(QEMU32) -cpu $(CPU32_P) $(QEMU_COMMON) -kernel $<
 
-# GDB targets (similar pattern as run targets)
-gdb64: test64.img
-	$(QEMU64) -cpu $(CPU64_B) -s -S $(QEMU_COMMON) -kernel $<
+run64-jhauser: test64-jhauser.img
+	$(QEMU64) -cpu $(CPU64_P) $(QEMU_COMMON) -kernel $<
 
-gdb32: test32.img
-	$(QEMU32) -cpu $(CPU32_B) -s -S $(QEMU_COMMON) -kernel $<
+run32-jhuser: test32-jhauser.img
+	$(QEMU32) -cpu $(CPU32_P) $(QEMU_COMMON) -kernel $<
+
+# GDB targets (similar pattern as run targets)
+gdb64: test64-jhauser.img
+	$(QEMU64) -cpu $(CPU64_P) -s -S $(QEMU_COMMON) -kernel $<
+
+gdb32: test32-jhauser.img
+	$(QEMU32) -cpu $(CPU32_P) -s -S $(QEMU_COMMON) -kernel $<
 
 # ... similar for other gdb targets ...
 
