@@ -79,18 +79,18 @@ _start:
     pasubu.b s9, s6, s7
     bne s9, s8, print_error
 
-    # PDIF.B
+    # pabd.B
     li s6, 0x7F7F01FF # rs1
     li s7, 0x7F70FF7E # rs2
     li s8, 0x000F027F # expected result
-    pdif.b s9, s6, s7
+    pabd.b s9, s6, s7
     bne s9, s8, print_error
 
-    # PDIFU.B
+    # pabdU.B
     li s6, 0x807F01FF # rs1
     li s7, 0x7F01FFFE # rs2
     li s8, 0x017EFE01 # expected result
-    pdifu.b s9, s6, s7
+    pabdu.b s9, s6, s7
     bne s9, s8, print_error
 
     # PSABS.B
@@ -113,19 +113,19 @@ _start:
     predsumu.bs s9, s6, s7
     bne s9, s8, print_error
 
-    # PDIFSUMU.B
+    # pabdSUMU.B
     li s6, 0x807FFFFF # rs1
     li s7, 0x7F0101FE # rs2
     li s8, 0x00000180 # expected result
-    pdifsumu.b s9, s6, s7
+    pabdsumu.b s9, s6, s7
     bne s9, s8, print_error
 
-    # PDIFSUMAU.B
+    # pabdSUMAU.B
     li s6, 0x807FFFFF # rs1
     li s7, 0x7F0101FE # rs2
     li s9, 0x00000001 # rd
     li s8, 0x00000181 # expected result
-    pdifsumau.b s9, s6, s7
+    pabdsumau.b s9, s6, s7
     bne s9, s8, print_error
 
     # PADD.HS
@@ -261,18 +261,18 @@ _start:
     pasa.hx s9, s6, s7
     bne s9, s8, print_error
 
-    # PDIF.H
+    # pabd.H
     li s6, 0x00017FFF # rs1
     li s7, 0x00020001 # rs2
     li s8, 0x00017FFE # expected result
-    pdif.h s9, s6, s7
+    pabd.h s9, s6, s7
     bne s9, s8, print_error
 
-    # PDIFU.H
+    # pabdU.H
     li s6, 0xFFFE7FFF # rs1
     li s7, 0x00010001 # rs2
     li s8, 0xFFFD7FFE # expected result
-    pdifu.h s9, s6, s7
+    pabdu.h s9, s6, s7
     bne s9, s8, print_error
 
     # PSABS.H
@@ -639,53 +639,53 @@ _start:
     msltu s9, s6, s7
     bne s9, s8, print_error
 
-    # PPACK.H
+    # PPAIRE.B
     li s6, 0xAABBCCDD # rs1
     li s7, 0x33445566 # rs2
     li s8, 0x44BB66DD # expected result
-    ppack.h s9, s6, s7
+    ppaire.b s9, s6, s7
     bne s9, s8, print_error
 
-    # PPACKBT.H
+    # PPAIREO.B
     li s6, 0xAABBCCDD # rs1
     li s7, 0x33445566 # rs2
     li s8, 0x33BB55DD # expected result
-    ppackbt.h s9, s6, s7
+    ppaireo.b s9, s6, s7
     bne s9, s8, print_error
 
-    # PPACKTB.H
+    # PPAIROE.B
     li s6, 0xAABBCCDD # rs1
     li s7, 0x33445566 # rs2
     li s8, 0x44AA66CC # expected result
-    ppacktb.h s9, s6, s7
+    ppairoe.b s9, s6, s7
     bne s9, s8, print_error
 
-    # PPACKT.H
+    # PPAIRO.B
     li s6, 0xAABBCCDD # rs1
     li s7, 0x33445566 # rs2
     li s8, 0x33AA55CC # expected result
-    ppackt.h s9, s6, s7
+    ppairo.b s9, s6, s7
     bne s9, s8, print_error
 
-    # PACKBT_32
+    # PPAIREO.H
     li s6, 0x44443333 # rs1
     li s7, 0x88887777 # rs2
     li s8, 0x88883333 # expected result
-    packbt s9, s6, s7
+    ppaireo.h s9, s6, s7
     bne s9, s8, print_error
 
-    # PACKTB_32
+    # PPAIROE.H
     li s6, 0x44443333 # rs1
     li s7, 0x88887777 # rs2
     li s8, 0x77774444 # expected result
-    packtb s9, s6, s7
+    ppairoe.h s9, s6, s7
     bne s9, s8, print_error
 
-    # PACKT_32
+    # PPAIRO.H
     li s6, 0x44443333 # rs1
     li s7, 0x88887777 # rs2
     li s8, 0x88884444 # expeced result
-    packt s9, s6, s7
+    ppairo.h s9, s6, s7
     bne s9, s8, print_error
 
     # ABS
