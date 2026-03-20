@@ -580,7 +580,7 @@ test_continue_47:
     #PSSUBU.W
     li s6, 0x7fffffff00000001 # rs1
     li s7, 0x80000000FFFFFFFF # rs2
-    li s8, 0xFFFFFFFFFFFFFFFF # expected result
+    li s8, 0x0000000000000000 # expected result
     pssubu.w s9, s6, s7
     bne s9, s8, test_fail_48
     j test_continue_48
@@ -924,7 +924,7 @@ test_continue_76:
 
     #PSATI.H
     li s6, 0x000FFFF07FFF8000 # rs1
-    li s8, 0x000FFFF0000FFFF0 # rs1
+    li s8, 0x000FFFF0000FFFF0 # expected result
     psati.h s9, s6, 4         # -16 - 15
     bne s9, s8, test_fail_77
     j test_continue_77
@@ -1389,7 +1389,7 @@ test_continue_116:
 
     #SATI.64
     li s6, 0x0000005000000020 #rs1
-    li s8, 0x0000005000000020 #expected result
+    li s8, 0x000000000000007F #expected result
     sati s9, s6, 7
     bne s9, s8, test_fail_117
     j test_continue_117
@@ -1400,7 +1400,7 @@ test_continue_117:
 
     #USATI_64
     li s6, 0x0000005000000020 #rs1
-    li s8, 0x0000005000000020 #expected result
+    li s8, 0x000000000000007F #expected result
     usati s9, s6, 7
     bne s9, s8, test_fail_118
     j test_continue_118
@@ -3580,6 +3580,7 @@ test_continue_293:
     # prepare final status output
     beqz    s5, print_pass
     j       print_summary_fail
+
 print_pass:
     li      s1, 0x10000000  # UART output register
     la      s2, pass

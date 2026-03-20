@@ -1,5 +1,4 @@
 # Tool paths
-<<<<<<< HEAD
 QEMU64   = /opt/plct-qemu/bin/qemu-system-riscv64
 QEMU32   = /opt/plct-qemu/bin/qemu-system-riscv32
 CC64     = /opt/riscv64/bin/riscv64-unknown-linux-gnu-gcc
@@ -46,8 +45,8 @@ CPU64_ZCE    = rv64,zcd=false,zca=true,zcb=true,zcmp=true,zbb=true,zba=true,zcmt
 CPU32_ZCE    = rv32,zcd=false,zca=true,zcb=true,zcmp=true,zbb=true,zba=true,zcmt=true
 CPU64_B      = rv64,zba=true,zbb=true,zbc=true,zbs=true
 CPU32_B      = rv32,zba=true,zbb=true,zbc=true,zbs=true
-CPU64_P      = rv64,x-p=true
-CPU32_P      = rv32,x-p=true
+CPU64_P      = rv64,zba=true,zbb=true,zbkb=true,x-p=true
+CPU32_P      = rv32,zba=true,zbb=true,zbkb=true,x-p=true
 
 # Default target
 all: test64.img test32.img

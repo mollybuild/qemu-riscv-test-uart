@@ -194,10 +194,10 @@ test_fail_15:
     jal ra, report_error
 test_continue_15:
 
-    # pabdSUMU.B
+    # PABDSUMU.B
     li s6, 0x807FFFFF # rs1
     li s7, 0x7F0101FE # rs2
-    li s8, 0x00000180 # expected result
+    li s8, 0x0000017E # expected result
     pabdsumu.b s9, s6, s7
     bne s9, s8, test_fail_16
     j test_continue_16
@@ -206,11 +206,11 @@ test_fail_16:
     jal ra, report_error
 test_continue_16:
 
-    # pabdSUMAU.B
+    # PADBSUMAU.B
     li s6, 0x807FFFFF # rs1
     li s7, 0x7F0101FE # rs2
     li s9, 0x00000001 # rd
-    li s8, 0x00000181 # expected result
+    li s8, 0x0000017F # expected result
     pabdsumau.b s9, s6, s7
     bne s9, s8, test_fail_17
     j test_continue_17
