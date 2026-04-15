@@ -4392,6 +4392,134 @@ test_fail_380:
     jal ra, report_error
 test_continue_380:
 
+    # PSSHL.HS
+    li s6, 0xF2341234 # rs1
+    li s7, 0xFFFFFFFC # rs2
+    li s8, 0x0F230123 # expected result
+    psshl.hs s9, s6, s7
+    bne s9, s8, test_fail_381
+    j test_continue_381
+test_fail_381:
+    la a0, test_name_381
+    jal ra, report_error
+test_continue_381:
+
+    # PSSHLR.HS
+    li s6, 0xF2391239 # rs1
+    li s7, 0xFFFFFFFC # rs2
+    li s8, 0x0F240124 # expected result
+    psshlr.hs s9, s6, s7
+    bne s9, s8, test_fail_382
+    j test_continue_382
+test_fail_382:
+    la a0, test_name_382
+    jal ra, report_error
+test_continue_382:
+
+    # SSHL
+    li s6, 0x12345678 # rs1
+    li s7, 0xFFFFFFFC # rs2
+    li s8, 0x01234567 # expected result
+    sshl s9, s6, s7
+    bne s9, s8, test_fail_383
+    j test_continue_383
+test_fail_383:
+    la a0, test_name_383
+    jal ra, report_error
+test_continue_383:
+
+    # SSHLR
+    li s6, 0x12345679 # rs1
+    li s7, 0xFFFFFFFC # rs2
+    li s8, 0x01234568 # expected result
+    sshlr s9, s6, s7
+    bne s9, s8, test_fail_384
+    j test_continue_384
+test_fail_384:
+    la a0, test_name_384
+    jal ra, report_error
+test_continue_384:
+
+    # PSSHL.DHS
+    li s6, 0xF2341234 # rs1_l
+    li s7, 0x7FFF0001 # rs1_h
+    li s10, 0xFFFFFFFC # rs2
+    li s11, 0x0F230123 # expected result low
+    li t0, 0x07FF0000 # expected result high
+    psshl.dhs s8, s6, s10
+    bne s8, s11, test_fail_385
+    j test_continue_385
+test_fail_385:
+    la a0, test_name_385
+    jal ra, report_error
+test_continue_385:
+    bne s9, t0, test_fail_386
+    j test_continue_386
+test_fail_386:
+    la a0, test_name_386
+    jal ra, report_error
+test_continue_386:
+
+    # PSSHLR.DHS
+    li s6, 0xF2391239 # rs1_l
+    li s7, 0x7FFF0009 # rs1_h
+    li s10, 0xFFFFFFFC # rs2
+    li s11, 0x0F240124 # expected result low
+    li t0, 0x08000001 # expected result high
+    psshlr.dhs s8, s6, s10
+    bne s8, s11, test_fail_387
+    j test_continue_387
+test_fail_387:
+    la a0, test_name_387
+    jal ra, report_error
+test_continue_387:
+    bne s9, t0, test_fail_388
+    j test_continue_388
+test_fail_388:
+    la a0, test_name_388
+    jal ra, report_error
+test_continue_388:
+
+    # PSSHL.DWS
+    li s6, 0x12345678 # rs1_l
+    li s7, 0x80000009 # rs1_h
+    li s10, 0xFFFFFFFC # rs2
+    li s11, 0x01234567 # expected result low
+    li t0, 0x08000000 # expected result high
+    psshl.dws s8, s6, s10
+    bne s8, s11, test_fail_389
+    j test_continue_389
+test_fail_389:
+    la a0, test_name_389
+    jal ra, report_error
+test_continue_389:
+    bne s9, t0, test_fail_390
+    j test_continue_390
+test_fail_390:
+    la a0, test_name_390
+    jal ra, report_error
+test_continue_390:
+
+    # PSSHLR.DWS
+    li s6, 0x12345679 # rs1_l
+    li s7, 0x80000009 # rs1_h
+    li s10, 0xFFFFFFFC # rs2
+    li s11, 0x01234568 # expected result low
+    li t0, 0x08000001 # expected result high
+    psshlr.dws s8, s6, s10
+    bne s8, s11, test_fail_391
+    j test_continue_391
+test_fail_391:
+    la a0, test_name_391
+    jal ra, report_error
+test_continue_391:
+    bne s9, t0, test_fail_392
+    j test_continue_392
+test_fail_392:
+    la a0, test_name_392
+    jal ra, report_error
+test_continue_392:
+
     # prepare final status output
     beqz    s5, print_pass
     j       print_summary_fail
@@ -5598,6 +5726,42 @@ test_name_379:
 
 test_name_380:
     .string "WMACCU"
+
+test_name_381:
+    .string "PSSHL.HS"
+
+test_name_382:
+    .string "PSSHLR.HS"
+
+test_name_383:
+    .string "SSHL"
+
+test_name_384:
+    .string "SSHLR"
+
+test_name_385:
+    .string "PSSHL.DHS"
+
+test_name_386:
+    .string "PSSHL.DHS"
+
+test_name_387:
+    .string "PSSHLR.DHS"
+
+test_name_388:
+    .string "PSSHLR.DHS"
+
+test_name_389:
+    .string "PSSHL.DWS"
+
+test_name_390:
+    .string "PSSHL.DWS"
+
+test_name_391:
+    .string "PSSHLR.DWS"
+
+test_name_392:
+    .string "PSSHLR.DWS"
 
 pass:
     .string "passed!\n"

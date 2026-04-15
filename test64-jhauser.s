@@ -3577,6 +3577,150 @@ test_fail_293:
     jal ra, report_error
 test_continue_293:
 
+    #PSSHL.HS
+    li s6, 0xF23412347FFF0001 # rs1
+    li s7, 0xFFFFFFFFFFFFFFFC # rs2
+    li s8, 0x0F23012307FF0000 # expected result
+    psshl.hs s9, s6, s7
+    bne s9, s8, test_fail_294
+    j test_continue_294
+test_fail_294:
+    la a0, test_name_294
+    jal ra, report_error
+test_continue_294:
+
+    #PSSHLR.HS
+    li s6, 0xF23912397FFF0009 # rs1
+    li s7, 0xFFFFFFFFFFFFFFFC # rs2
+    li s8, 0x0F24012408000001 # expected result
+    psshlr.hs s9, s6, s7
+    bne s9, s8, test_fail_295
+    j test_continue_295
+test_fail_295:
+    la a0, test_name_295
+    jal ra, report_error
+test_continue_295:
+
+    #PSSHL.WS
+    li s6, 0x8000000912345678 # rs1
+    li s7, 0xFFFFFFFFFFFFFFFC # rs2
+    li s8, 0x0800000001234567 # expected result
+    psshl.ws s9, s6, s7
+    bne s9, s8, test_fail_296
+    j test_continue_296
+test_fail_296:
+    la a0, test_name_296
+    jal ra, report_error
+test_continue_296:
+
+    #PSSHLR.WS
+    li s6, 0x8000000912345679 # rs1
+    li s7, 0xFFFFFFFFFFFFFFFC # rs2
+    li s8, 0x0800000101234568 # expected result
+    psshlr.ws s9, s6, s7
+    bne s9, s8, test_fail_297
+    j test_continue_297
+test_fail_297:
+    la a0, test_name_297
+    jal ra, report_error
+test_continue_297:
+
+    #SHL
+    li s6, 0x123456789ABCDEF0 # rs1
+    li s7, 0xFFFFFFFFFFFFFFFC # rs2
+    li s8, 0x0123456789ABCDEF # expected result
+    shl s9, s6, s7
+    bne s9, s8, test_fail_298
+    j test_continue_298
+test_fail_298:
+    la a0, test_name_298
+    jal ra, report_error
+test_continue_298:
+
+    #SHLR
+    li s6, 0x123456789ABCDEF8 # rs1
+    li s7, 0xFFFFFFFFFFFFFFFC # rs2
+    li s8, 0x0123456789ABCDF0 # expected result
+    shlr s9, s6, s7
+    bne s9, s8, test_fail_299
+    j test_continue_299
+test_fail_299:
+    la a0, test_name_299
+    jal ra, report_error
+test_continue_299:
+
+    #PNCLIPP.B
+    li s6, 0xFF80FF7F0080007F # rs1
+    li s7, 0x12348000FF7F00AA # rs2
+    li s8, 0x7F80807F80807F7F # expected result
+    pnclipp.b s9, s6, s7
+    bne s9, s8, test_fail_300
+    j test_continue_300
+test_fail_300:
+    la a0, test_name_300
+    jal ra, report_error
+test_continue_300:
+
+    #PNCLIPUP.B
+    li s6, 0x1FF000FF01000000 # rs1
+    li s7, 0x00AA123400010100 # rs2
+    li s8, 0xAAFF01FFFFFFFF00 # expected result
+    pnclipup.b s9, s6, s7
+    bne s9, s8, test_fail_301
+    j test_continue_301
+test_fail_301:
+    la a0, test_name_301
+    jal ra, report_error
+test_continue_301:
+
+    #PNCLIPP.H
+    li s6, 0xFFFF800000007FFF # rs1
+    li s7, 0x1234567880008000 # rs2
+    li s8, 0x7FFF800080007FFF # expected result
+    pnclipp.h s9, s6, s7
+    bne s9, s8, test_fail_302
+    j test_continue_302
+test_fail_302:
+    la a0, test_name_302
+    jal ra, report_error
+test_continue_302:
+
+    #PNCLIPUP.H
+    li s6, 0x0001FFFF00000001 # rs1
+    li s7, 0x1234567800008000 # rs2
+    li s8, 0xFFFF8000FFFF0001 # expected result
+    pnclipup.h s9, s6, s7
+    bne s9, s8, test_fail_303
+    j test_continue_303
+test_fail_303:
+    la a0, test_name_303
+    jal ra, report_error
+test_continue_303:
+
+    #PNCLIPP.W
+    li s6, 0xFFFFFFFF80000000 # rs1
+    li s7, 0x000000007FFFFFFF # rs2
+    li s8, 0x7FFFFFFF80000000 # expected result
+    pnclipp.w s9, s6, s7
+    bne s9, s8, test_fail_304
+    j test_continue_304
+test_fail_304:
+    la a0, test_name_304
+    jal ra, report_error
+test_continue_304:
+
+    #PNCLIPUP.W
+    li s6, 0x00000001FFFFFFFF # rs1
+    li s7, 0x0000000000000001 # rs2
+    li s8, 0x00000001FFFFFFFF # expected result
+    pnclipup.w s9, s6, s7
+    bne s9, s8, test_fail_305
+    j test_continue_305
+test_fail_305:
+    la a0, test_name_305
+    jal ra, report_error
+test_continue_305:
+
     # prepare final status output
     beqz    s5, print_pass
     j       print_summary_fail
@@ -4525,6 +4669,42 @@ test_name_292:
 
 test_name_293:
   .string "PMHACCSU.W.H1"
+
+test_name_294:
+  .string "PSSHL.HS"
+
+test_name_295:
+  .string "PSSHLR.HS"
+
+test_name_296:
+  .string "PSSHL.WS"
+
+test_name_297:
+  .string "PSSHLR.WS"
+
+test_name_298:
+  .string "SHL"
+
+test_name_299:
+  .string "SHLR"
+
+test_name_300:
+  .string "PNCLIPP.B"
+
+test_name_301:
+  .string "PNCLIPUP.B"
+
+test_name_302:
+  .string "PNCLIPP.H"
+
+test_name_303:
+  .string "PNCLIPUP.H"
+
+test_name_304:
+  .string "PNCLIPP.W"
+
+test_name_305:
+  .string "PNCLIPUP.W"
 
 pass:
   .string "passed!\n"
