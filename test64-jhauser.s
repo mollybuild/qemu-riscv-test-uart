@@ -1,3 +1,8 @@
+.macro TRACE_TEST idx
+    la a0, test_name_\idx
+    jal ra, trace_test
+.endm
+
 .global _start
 
 _start:
@@ -6,6 +11,7 @@ _start:
     li s6, 0x7F120003FF780001 # rs1
     li s7, 0x7F340007FF9a0005 # rs2
     li s8, 0xfe46000aff120006 # expected result
+    TRACE_TEST 0
     padd.h s9, s6, s7
     bne s9, s8, test_fail_0
     j test_continue_0
@@ -18,6 +24,7 @@ test_continue_0:
     li s6, 0x7F120003FF780001 # rs1
     li s7, 0x0001325820007F34 # rs2
     li s8, 0xFE467F377EAC7F35 # expected result
+    TRACE_TEST 1
     padd.hs s9, s6, s7
     bne s9, s8, test_fail_1
     j test_continue_1
@@ -30,6 +37,7 @@ test_continue_1:
     li s6, 0x7F120003FF780001 # rs1
     li s7, 0x7F340007FF9a0005 # rs2
     li s8, 0xFE46000aFE120006 # expected result
+    TRACE_TEST 2
     padd.b s9, s6, s7
     bne s9, s8, test_fail_2
     j test_continue_2
@@ -42,6 +50,7 @@ test_continue_2:
     li s6, 0x5A3C02B4FF88011E #rs1
     li s7, 0x0000131201020112 #rs2
     li s8, 0x6C4E14C6119A1330 #expected result
+    TRACE_TEST 3
     padd.bs s9, s6, s7
     bne s9, s8, test_fail_3
     j test_continue_3
@@ -54,6 +63,7 @@ test_continue_3:
     li s6, 0xFFFF000000000001 # rs1
     li s7, 0x111100010000FFFF # rs2
     li s8, 0xeeee00ff00000102 # expected result
+    TRACE_TEST 4
     psub.b s9, s6, s7
     bne s9, s8, test_fail_4
     j test_continue_4
@@ -66,6 +76,7 @@ test_continue_4:
     li s6, 0xFFFF000000000001 # rs1
     li s7, 0x111100010000FFFF # rs2
     li s8, 0xeeeeffff00000002 # expected result
+    TRACE_TEST 5
     psub.h s9, s6, s7
     bne s9, s8, test_fail_5
     j test_continue_5
@@ -78,6 +89,7 @@ test_continue_5:
     li s6, 0x7F120003FF788001 # rs1
     li s7, 0x7F340007FF9a8005 # rs2
     li s8, 0x7F46000aFE128006 # expected result
+    TRACE_TEST 6
     psadd.b s9, s6, s7
     bne s9, s8, test_fail_6
     j test_continue_6
@@ -90,6 +102,7 @@ test_continue_6:
     li s6, 0x7F120003FF788001 # rs1
     li s7, 0x7F340007FF9a8005 # rs2
     li s8, 0x7FFF000aFF128000 # expected result
+    TRACE_TEST 7
        psadd.h s9, s6, s7
     bne s9, s8, test_fail_7
     j test_continue_7
@@ -102,6 +115,7 @@ test_continue_7:
     li s6, 0x7F120003FF780001 # rs1
     li s7, 0x7F340007FF9a0005 # rs2
     li s8, 0xFE46000aFFFF0006 # expected result
+    TRACE_TEST 8
     psaddu.b s9, s6, s7
     bne s9, s8, test_fail_8
     j test_continue_8
@@ -114,6 +128,7 @@ test_continue_8:
     li s6, 0x7F120003FF780001 # rs1
     li s7, 0x7F340007FF9a0005 # rs2
     li s8, 0xFE46000aFFFF0006 # expected result
+    TRACE_TEST 9
     psaddu.h s9, s6, s7
     bne s9, s8, test_fail_9
     j test_continue_9
@@ -126,6 +141,7 @@ test_continue_9:
     li s6, 0x80007fff00000001 # rs1
     li s7, 0x7fff80000000FFFF # rs2
     li s8, 0x80017fff00000102 # expected result
+    TRACE_TEST 10
     pssub.b s9, s6, s7
     bne s9, s8, test_fail_10
     j test_continue_10
@@ -138,6 +154,7 @@ test_continue_10:
     li s6, 0x80007fff00000001 # rs1
     li s7, 0x7fff80000000FFFF # rs2
     li s8, 0x80007fff00000002 # expected result
+    TRACE_TEST 11
     pssub.h s9, s6, s7
     bne s9, s8, test_fail_11
     j test_continue_11
@@ -149,7 +166,8 @@ test_continue_11:
     #PSSUBU.B
     li s6, 0x80007fff00000001 # rs1
     li s7, 0x7fff80000000FFFF # rs2
-    li s8, 0x01ffffff0000ffff # expected result
+    li s8, 0x010000FF00000000 # expected result
+    TRACE_TEST 12
     pssubu.b s9, s6, s7
     bne s9, s8, test_fail_12
     j test_continue_12
@@ -161,7 +179,8 @@ test_continue_12:
     #PSSUBU.H
     li s6, 0x80007fff00000001 # rs1
     li s7, 0x7fff80000000FFFF # rs2
-    li s8, 0x0001ffff0000ffff # expected result
+    li s8, 0x0001000000000000 # expected result
+    TRACE_TEST 13
     pssubu.h s9, s6, s7
     bne s9, s8, test_fail_13
     j test_continue_13
@@ -174,6 +193,7 @@ test_continue_13:
     li s6, 0x7F120003FF780001 # rs1
     li s7, 0x7F340007FF9a0005 # rs2
     li s8, 0x7F230005ff090003 # expected result
+    TRACE_TEST 14
     paadd.b s9, s6, s7
     bne s9, s8, test_fail_14
     j test_continue_14
@@ -186,6 +206,7 @@ test_continue_14:
     li s6, 0x7F120003FF780001 # rs1
     li s7, 0x7F340007FF9a0005 # rs2
     li s8, 0x7F230005ff890003# expected result
+    TRACE_TEST 15
     paadd.h s9, s6, s7
     bne s9, s8, test_fail_15
     j test_continue_15
@@ -198,6 +219,7 @@ test_continue_15:
     li s6, 0x7F120003FF780001 # rs1
     li s7, 0x7F340007FF9a0005 # rs2
     li s8, 0x7f230005FF890003 # expected result
+    TRACE_TEST 16
     paaddu.b s9, s6, s7
     bne s9, s8, test_fail_16
     j test_continue_16
@@ -210,6 +232,7 @@ test_continue_16:
     li s6, 0x7F120003FF780001 # rs1
     li s7, 0x7F340007FF9a0005 # rs2
     li s8, 0x7f230005Ff890003# expected result
+    TRACE_TEST 17
     paaddu.h s9, s6, s7
     bne s9, s8, test_fail_17
     j test_continue_17
@@ -222,6 +245,7 @@ test_continue_17:
     li s6, 0xFFFF000000000001 # rs1
     li s7, 0x111100010000FFFF # rs2
     li s8, 0xF7f700FF00000001 # expected result
+    TRACE_TEST 18
     pasub.b s9, s6, s7
     bne s9, s8, test_fail_18
     j test_continue_18
@@ -234,6 +258,7 @@ test_continue_18:
     li s6, 0xFFFF000000000001 # rs1
     li s7, 0x111100010000FFFF # rs2
     li s8, 0xF777FFFF00000001 # expected result
+    TRACE_TEST 19
     pasub.h s9, s6, s7
     bne s9, s8, test_fail_19
     j test_continue_19
@@ -246,6 +271,7 @@ test_continue_19:
     li s6, 0xFFFF000000000001 # rs1
     li s7, 0x111100010000FFFF # rs2
     li s8, 0x777700FF00008081 # expected result
+    TRACE_TEST 20
     pasubu.b s9, s6, s7
     bne s9, s8, test_fail_20
     j test_continue_20
@@ -258,6 +284,7 @@ test_continue_20:
     li s6, 0xFFFF000000000001 # rs1
     li s7, 0x111100010000FFFF # rs2
     li s8, 0x7777FFFF00008001 # expected result
+    TRACE_TEST 21
     pasubu.h s9, s6, s7
     bne s9, s8, test_fail_21
     j test_continue_21
@@ -269,6 +296,7 @@ test_continue_21:
     #PSABS.B
     li s6, 0x00007FFFFFFF8000 # rs1
     li s8, 0x00007F0101017F00 # expected result
+    TRACE_TEST 22
     psabs.b s9, s6
     bne s9, s8, test_fail_22
     j test_continue_22
@@ -281,6 +309,7 @@ test_continue_22:
     li s6, 0x0000000100000001 # rs1
     li s7, 0x0001000000010000 # rs2
     li s8, 0x0000000000000004 # expected result
+    TRACE_TEST 23
     pabdsumu.b s9, s6, s7
     bne s9, s8, test_fail_23
     j test_continue_23
@@ -294,6 +323,7 @@ test_continue_23:
     li s7, 0x0001000000010000 # rs2
     li s9, 1 # rd
     li s8, 0x0000000000000005 # expected result
+    TRACE_TEST 24
     pabdsumau.b s9, s6, s7
     bne s9, s8, test_fail_24
     j test_continue_24
@@ -306,6 +336,7 @@ test_continue_24:
     li s6, 0x7F12000aFF787fff # rs1
     li s7, 0x00077F348000FF9a # rs2
     li s8, 0xfe460003ff12FFFF # expected result
+    TRACE_TEST 25
     pas.hx s9, s6, s7
     bne s9, s8, test_fail_25
     j test_continue_25
@@ -318,6 +349,7 @@ test_continue_25:
     li s6, 0x7F120003FF780001 #rs1
     li s7, 0x7F340007FF9A0005 #rs2
     li s8, 0x7F0B7F37FF73FF9B #expected result
+    TRACE_TEST 26
     psa.hx s9, s6, s7
     bne s9, s8, test_fail_26
     j test_continue_26
@@ -330,6 +362,7 @@ test_continue_26:
     li s6, 0x7F12000aFF787fff # rs1
     li s7, 0x00077F348000FF9a # rs2
     li s8, 0x7fff0003ff127fff # expected result
+    TRACE_TEST 27
     psas.hx s9, s6, s7
     bne s9, s8, test_fail_27
     j test_continue_27
@@ -342,6 +375,7 @@ test_continue_27:
     li s6, 0x7F12000aFF787fff #rs1
     li s7, 0x00077F348000FF9a #rs2
     li s8, 0xFFDE0011FFDEFFFF #expected result
+    TRACE_TEST 28
     pssa.hx s9, s6, s7
     bne s9, s8, test_fail_28
     j test_continue_28
@@ -354,6 +388,7 @@ test_continue_28:
     li s6, 0x7F12000aFF787fff # rs1
     li s7, 0x00077F348000FF9a # rs2
     li s8, 0x7f230001ff897FFF # expected result
+    TRACE_TEST 29
     paas.hx s9, s6, s7
     bne s9, s8, test_fail_29
     j test_continue_29
@@ -366,6 +401,7 @@ test_continue_29:
     li s6, 0x7F12000aFF787fff  # rs1
     li s7, 0x00077F348000FF9a  # rs2
     li s8, 0xFFEF0008FFEFFFFF  # expected result
+    TRACE_TEST 30
     pasa.hx s9, s6, s7
     bne s9, s8, test_fail_30
     j test_continue_30
@@ -377,6 +413,7 @@ test_continue_30:
     #PSABS.H
     li s6, 0x00007FFFFFFF8000 # rs1
     li s8, 0x00007FFF00017FFF # rs1
+    TRACE_TEST 31
     psabs.h s9, s6
     bne s9, s8, test_fail_31
     j test_continue_31
@@ -389,6 +426,7 @@ test_continue_31:
     li s6, 0x7FFF8000000AFFFB  #rs1
     li s7, 0x0001FFFE00050005  #rs2
     li s8, 0xFFFFFFFE0019FFFB #expected result
+    TRACE_TEST 32
     psh1add.h s9, s6, s7
     bne s9, s8, test_fail_32
     j test_continue_32
@@ -401,6 +439,7 @@ test_continue_32:
     li s6, 0xC000200040008000 #rs1
     li s7, 0x80007FFF00010001 #rs2
     li s8, 0x80007FFF7FFF8001 #expected result
+    TRACE_TEST 33
     pssh1sadd.h s9, s6, s7
     bne s9, s8, test_fail_33
     j test_continue_33
@@ -413,6 +452,7 @@ test_continue_33:
     li s6, 0x00010002FFFE7FFF #rs1
     li s7, 0x0002000100010001 #rs2
     li s8, 0x0001000100037FFE #expected result
+    TRACE_TEST 34
     pabd.h s9, s6, s7
     bne s9, s8, test_fail_34
     j test_continue_34
@@ -425,6 +465,7 @@ test_continue_34:
     li s6, 0x00010002FFFE7FFF #rs1
     li s7, 0x0002000100010001 #rs2
     li s8, 0x00010001FFFD7FFE #expected result
+    TRACE_TEST 35
     pabdu.h s9, s6, s7
     bne s9, s8, test_fail_35
     j test_continue_35
@@ -437,6 +478,7 @@ test_continue_35:
     li s6, 0x807F0201807F0201 #rs1
     li s7, 0x018001FF7F80027F #rs2
     li s8, 0x81FF0102FFFF007E #expected result
+    TRACE_TEST 36
     pabd.b s9, s6, s7
     bne s9, s8, test_fail_36
     j test_continue_36
@@ -449,6 +491,7 @@ test_continue_36:
     li s6, 0x807F0201807F0201 #rs1
     li s7, 0x018001FF7F80027F #rs2
     li s8, 0x7F0101FE0101007E #expected result
+    TRACE_TEST 37
     pabdu.b s9, s6, s7
     bne s9, s8, test_fail_37
     j test_continue_37
@@ -461,6 +504,7 @@ test_continue_37:
     li s6, 0x0003000400010002 #rs1
     li s7, 0x000000000000000A #rs2
     li s8, 0x0000000000000014 #expected result
+    TRACE_TEST 38
     predsum.hs s9, s6, s7
     bne s9, s8, test_fail_38
     j test_continue_38
@@ -473,6 +517,7 @@ test_continue_38:
     li s6, 0x1000200030004000 #rs1
     li s7, 0x0000000000001000 #rs2
     li s8, 0x000000000000B000 #expected result
+    TRACE_TEST 39
     predsumu.hs s9, s6, s7
     bne s9, s8, test_fail_39
     j test_continue_39
@@ -485,6 +530,7 @@ test_continue_39:
     li s6, 0x807F02FE01807F02 #rs1
     li s7, 0x0000000000000064 #rs2
     li s8, 0x0000000000000065 #expected result
+    TRACE_TEST 40
     predsum.bs s9, s6, s7
     bne s9, s8, test_fail_40
     j test_continue_40
@@ -497,6 +543,7 @@ test_continue_40:
     li s6, 0x807F02FF01807F02 #rs1
     li s7, 0x0000000000000064 #rs2
     li s8, 0x0000000000000366 #expected result
+    TRACE_TEST 41
     predsumu.bs s9, s6, s7
     bne s9, s8, test_fail_41
     j test_continue_41
@@ -509,6 +556,7 @@ test_continue_41:
     li s6, 0x000000010007FFFF #rs1
     li s7, 0x0000000000A00000 #rs2
     li s8, 0x00A0000100A7FFFF #expected result
+    TRACE_TEST 42
     padd.ws s9, s6, s7
     bne s9, s8, test_fail_42
     j test_continue_42
@@ -521,6 +569,7 @@ test_continue_42:
     li s6, 0xFFFFFF12FFFFFF78 # rs1
     li s7, 0xFFFFFF34FFFFFF9a # rs2
     li s8, 0xFFFFFe46FFFFff12 # expected result
+    TRACE_TEST 43
     padd.w s9, s6, s7
     bne s9, s8, test_fail_43
     j test_continue_43
@@ -533,6 +582,7 @@ test_continue_43:
     li s6, 0x0000000000000001 # rs1
     li s7, 0x00000001FFFFFFFF # rs2
     li s8, 0xffffffff00000002 # expected result
+    TRACE_TEST 44
     psub.w s9, s6, s7
     bne s9, s8, test_fail_44
     j test_continue_44
@@ -545,6 +595,7 @@ test_continue_44:
     li s6, 0x800000007FFFFFFF # rs1
     li s7, 0x800000007FFFFFFF # rs2
     li s8, 0x800000007FFFFFFF # expected result
+    TRACE_TEST 45
     psadd.w s9, s6, s7
     bne s9, s8, test_fail_45
     j test_continue_45
@@ -557,6 +608,7 @@ test_continue_45:
     li s6, 0xFFFFFFFF7FFFFFFF # rs1
     li s7, 0xFFFFFFFF7FFFFFFF # rs2
     li s8, 0xFFFFFFFFFFFFFFFE # expected result
+    TRACE_TEST 46
     psaddu.w s9, s6, s7
     bne s9, s8, test_fail_46
     j test_continue_46
@@ -569,6 +621,7 @@ test_continue_46:
     li s6, 0x7fffffff00000001 # rs1
     li s7, 0x80000000FFFFFFFF # rs2
     li s8, 0x7fffffff00000002 # expected result
+    TRACE_TEST 47
     pssub.w s9, s6, s7
     bne s9, s8, test_fail_47
     j test_continue_47
@@ -581,6 +634,7 @@ test_continue_47:
     li s6, 0x7fffffff00000001 # rs1
     li s7, 0x80000000FFFFFFFF # rs2
     li s8, 0x0000000000000000 # expected result
+    TRACE_TEST 48
     pssubu.w s9, s6, s7
     bne s9, s8, test_fail_48
     j test_continue_48
@@ -593,6 +647,7 @@ test_continue_48:
     li s6, 0xFFFFFF12FFFFFF78 # rs1
     li s7, 0xFFFFFF34FFFFFF9a # rs2
     li s8, 0xFFFFff23FFFFff89 # expected result
+    TRACE_TEST 49
     paadd.w s9, s6, s7
     bne s9, s8, test_fail_49
     j test_continue_49
@@ -605,6 +660,7 @@ test_continue_49:
     li s6, 0xFFFFFF12FFFFFF78 # rs1
     li s7, 0xFFFFFF34FFFFFF9a # rs2
     li s8, 0xFFFFFf23FFFFFF89 # expected result
+    TRACE_TEST 50
     paaddu.w s9, s6, s7
     bne s9, s8, test_fail_50
     j test_continue_50
@@ -617,6 +673,7 @@ test_continue_50:
     li s6, 0x0000000000000001 # rs1
     li s7, 0x00000001FFFFFFFF # rs2
     li s8, 0xFFFFFFFF00000001 # expected result
+    TRACE_TEST 51
     pasub.w s9, s6, s7
     bne s9, s8, test_fail_51
     j test_continue_51
@@ -629,6 +686,7 @@ test_continue_51:
     li s6, 0x0000000000000001 # rs1
     li s7, 0x00000001FFFFFFFF # rs2
     li s8, 0xFFFFFFFF80000001 # expected result
+    TRACE_TEST 52
     pasubu.w s9, s6, s7
     bne s9, s8, test_fail_52
     j test_continue_52
@@ -641,6 +699,7 @@ test_continue_52:
     li s6, 0x0000000A2000000F #rs1
     li s7, 0x0000000500000003 #rs2
     li s8, 0x0000001940000021 #expected result
+    TRACE_TEST 53
     psh1add.w s9, s6, s7
     bne s9, s8, test_fail_53
     j test_continue_53
@@ -653,6 +712,7 @@ test_continue_53:
     li s6, 0x0000000200000001 #rs1
     li s7, 0x0000000300000004 #rs2
     li s8, 0x0000000700000006 #expected result
+    TRACE_TEST 54
     pssh1sadd.w s9, s6, s7
     bne s9, s8, test_fail_54
     j test_continue_54
@@ -666,6 +726,7 @@ test_continue_54:
     li s6, 0xffffffff00000000 # rs1
     li s7, 0x0000000100000001 # rs2
     li s8, 0x00000000FFFFFFFF # expected result
+    TRACE_TEST 55
     pas.wx s9, s6, s7
     bne s9, s8, test_fail_55
     j test_continue_55
@@ -678,6 +739,7 @@ test_continue_55:
     li s6, 0x00000000ffffffff # rs1
     li s7, 0x0000000100000001 # rs2
     li s8, 0xFFFFFFFF00000000 # expected result
+    TRACE_TEST 56
     psa.wx s9, s6, s7
     bne s9, s8, test_fail_56
     j test_continue_56
@@ -690,6 +752,7 @@ test_continue_56:
     li s6, 0x7fffffff80000000 # rs1
     li s7, 0x0000000100000001 # rs2
     li s8, 0x7fffffff80000000 # expected result
+    TRACE_TEST 57
     psas.wx s9, s6, s7
     bne s9, s8, test_fail_57
     j test_continue_57
@@ -702,6 +765,7 @@ test_continue_57:
     li s6, 0x800000007fffffff # rs1
     li s7, 0x0000000100000001 # rs2
     li s8, 0x800000007fffffff # expected result
+    TRACE_TEST 58
     pssa.wx s9, s6, s7
     bne s9, s8, test_fail_58
     j test_continue_58
@@ -714,6 +778,7 @@ test_continue_58:
     li s6, 0xffffffff80000001 # rs1
     li s7, 0x0000000100000001 # rs2
     li s8, 0x00000000c0000000 # expected result
+    TRACE_TEST 59
     paas.wx s9, s6, s7
     bne s9, s8, test_fail_59
     j test_continue_59
@@ -726,6 +791,7 @@ test_continue_59:
     li s6, 0x80000001ffffffff # rs1
     li s7, 0x0000000100000001 # rs2
     li s8, 0xc000000000000000 # expected result
+    TRACE_TEST 60
     pasa.wx s9, s6, s7
     bne s9, s8, test_fail_60
     j test_continue_60
@@ -738,6 +804,7 @@ test_continue_60:
     li s6, 0x7FFFFFFF00000005 #rs1
     li s7, 0x0000000000001000 #rs2
     li s8, 0x0000000080001004 #expected result
+    TRACE_TEST 61
     predsum.ws s9, s6, s7
     bne s9, s8, test_fail_61
     j test_continue_61
@@ -750,6 +817,7 @@ test_continue_61:
     li s6, 0xFFFFFFFF0000000A #rs1
     li s7, 0x0000000000001000 #rs2
     li s8, 0x0000000100001009 #expected result
+    TRACE_TEST 62
     predsumu.ws s9, s6, s7
     bne s9, s8, test_fail_62
     j test_continue_62
@@ -761,6 +829,7 @@ test_continue_62:
     #PSLLI.B
     li s6, 0xff88774433221100 # rs1
     li s8, 0xf840B82098108800 # expected result
+    TRACE_TEST 63
     pslli.b s9, s6, 3
     bne s9, s8, test_fail_63
     j test_continue_63
@@ -773,6 +842,7 @@ test_continue_63:
     li s6, 0x207F0201207F0201 #rs1
     li s7, 0x0000000000000002 #rs2
     li s8, 0x80FC080480FC0804 #expected result
+    TRACE_TEST 64
     psll.bs s9, s6, s7
     bne s9, s8, test_fail_64
     j test_continue_64
@@ -784,6 +854,7 @@ test_continue_64:
     #PSRLI.B
     li s6, 0xff88774433221100 # rs1
     li s8, 0x1f110e0806040200 # expected result
+    TRACE_TEST 65
     psrli.b s9, s6, 3
     bne s9, s8, test_fail_65
     j test_continue_65
@@ -796,6 +867,7 @@ test_continue_65:
     li s6, 0x80FF4080FF400A05 #rs1
     li s7, 0x0000000000000002 #rs2
     li s8, 0x203F10203F100201
+    TRACE_TEST 66
     psrl.bs s9, s6, s7
     bne s9, s8, test_fail_66
     j test_continue_66
@@ -807,6 +879,7 @@ test_continue_66:
     #PSRAI.B
     li s6, 0xff88774433221100 # rs1
     li s8, 0xfff10e0806040200 # expected result
+    TRACE_TEST 67
     psrai.b s9, s6, 3
     bne s9, s8, test_fail_67
     j test_continue_67
@@ -819,6 +892,7 @@ test_continue_67:
     li s6, 0x80FF4080FF400A85 #rs1
     li s7, 0x0000000000000002 #rs2
     li s8, 0xE0FF10E0FF1002E1 #expected result
+    TRACE_TEST 68
     psra.bs s9, s6, s7
     bne s9, s8, test_fail_68
     j test_continue_68
@@ -831,6 +905,7 @@ test_continue_68:
     li s6,  0x7FFF800080000001 # rs1
     li s7,  0x80007FFF80000002 # rs2
     li s10, 0x80FF80FF80000001 # expected result
+    TRACE_TEST 69
     pmin.b s8, s6, s7
     bne s10, s8, test_fail_69
     j test_continue_69
@@ -843,6 +918,7 @@ test_continue_69:
     li s6,  0x7FFF800080000001 # rs1
     li s7,  0x80007FFF80000002 # rs2
     li s10, 0x7F007F0080000001 # expected result
+    TRACE_TEST 70
     pminu.b s8, s6, s7
     bne s10, s8, test_fail_70
     j test_continue_70
@@ -855,6 +931,7 @@ test_continue_70:
     li s6,  0x7FFF800080000001 # rs1
     li s7,  0x80007FFF80000002 # rs2
     li s10, 0x7F007F0080000002 # expected result
+    TRACE_TEST 71
     pmax.b s8, s6, s7
     bne s10, s8, test_fail_71
     j test_continue_71
@@ -867,6 +944,7 @@ test_continue_71:
     li s6,  0x7FFF800080000001 # rs1
     li s7,  0x80007FFF80000002 # rs2
     li s10, 0x80FF80FF80000002 # expected result
+    TRACE_TEST 72
     pmaxu.b s8, s6, s7
     bne s10, s8, test_fail_72
     j test_continue_72
@@ -879,6 +957,7 @@ test_continue_72:
     li s6, 0x8888FFFF12340000 # rs1
     li s7, 0x8888FFFe12341000 # rs2
     li s8, 0xFFFFFF00FFFF00FF # expected result
+    TRACE_TEST 73
     pmseq.b s9, s6, s7
     bne s9, s8, test_fail_73
     j test_continue_73
@@ -891,6 +970,7 @@ test_continue_73:
     li s6, 0xFFFFFFFE12340000 # rs1
     li s7, 0xFFFEFFFF12340001 # rs2
     li s8, 0x000000FF000000FF # expected result
+    TRACE_TEST 74
     pmslt.b s9, s6, s7
     bne s9, s8, test_fail_74
     j test_continue_74
@@ -903,6 +983,7 @@ test_continue_74:
     li s6, 0xFFFFFFFE12340000 # rs1
     li s7, 0xFFFEFFFF12340001 # rs2
     li s8, 0x000000FF000000FF # expected result
+    TRACE_TEST 75
     pmsltu.b s9, s6, s7
     bne s9, s8, test_fail_75
     j test_continue_75
@@ -914,6 +995,7 @@ test_continue_75:
     #PSEXT.H.B
     li s6, 0x7766F5F433F2F100 # rs1
     li s8, 0x0066FFF4FFF20000 # expected result
+    TRACE_TEST 76
     psext.h.b s9, s6
     bne s9, s8, test_fail_76
     j test_continue_76
@@ -925,6 +1007,7 @@ test_continue_76:
     #PSATI.H
     li s6, 0x000FFFF07FFF8000 # rs1
     li s8, 0x000FFFF0000FFFF0 # expected result
+    TRACE_TEST 77
     psati.h s9, s6, 4         # -16 - 15
     bne s9, s8, test_fail_77
     j test_continue_77
@@ -936,6 +1019,7 @@ test_continue_77:
     #PUSATI.H
     li s6, 0x000FFFF07FFF8000 # rs1
     li s8, 0x000F0000000F0000 # rs1
+    TRACE_TEST 78
     pusati.h s9, s6, 4         # 0 - 15
     bne s9, s8, test_fail_78
     j test_continue_78
@@ -947,6 +1031,7 @@ test_continue_78:
     #PSLLI.H
     li s6, 0xe0007fff00001111 # rs1
     li s8, 0x0000fff800008888 # expected result
+    TRACE_TEST 79
     pslli.h s9, s6, 3
     bne s9, s8, test_fail_79
     j test_continue_79
@@ -959,6 +1044,7 @@ test_continue_79:
     li s6, 0x80007FFF00010002 #rs1
     li s7, 0x0000000000000003 #rs2
     li s8, 0x0000FFF800080010 #expectede result
+    TRACE_TEST 80
     psll.hs s9, s6, s7
     bne s9, s8, test_fail_80
     j test_continue_80
@@ -971,6 +1057,7 @@ test_continue_80:
     #PSRLI.H
     li s6, 0x80007fff00001111 # rs1
     li s8, 0x10000fff00000222 # expected result
+    TRACE_TEST 81
     psrli.h s9, s6, 3
     bne s9, s8, test_fail_81
     j test_continue_81
@@ -983,6 +1070,7 @@ test_continue_81:
     li s6, 0x80007FFF0010000F #rs1
     li s7, 0x0000000000000003 #rs2
     li s8, 0x10000FFF00020001 #expected result
+    TRACE_TEST 82
     psrl.hs s9, s6, s7
     bne s9, s8, test_fail_82
     j test_continue_82
@@ -994,6 +1082,7 @@ test_continue_82:
     #PSRAI.H
     li s6, 0x80007fff00001111 # rs1
     li s8, 0xf0000fff00000222 # expected result
+    TRACE_TEST 83
     psrai.h s9, s6, 3
     bne s9, s8, test_fail_83
     j test_continue_83
@@ -1006,6 +1095,7 @@ test_continue_83:
     li s6, 0x8000FFF800100008 #rs1
     li s7, 0x0000000000000003 #rs2
     li s8, 0xF000FFFF00020001 #expected result
+    TRACE_TEST 84
     psra.hs s9, s6, s7
     bne s9, s8, test_fail_84
     j test_continue_84
@@ -1017,6 +1107,7 @@ test_continue_84:
     #PSSLAI.H
     li s6, 0x80007fff00001111 # rs1
     li s8, 0x80007fff00007fff # expected result
+    TRACE_TEST 85
     psslai.h s9, s6, 3
     bne s9, s8, test_fail_85
     j test_continue_85
@@ -1028,6 +1119,7 @@ test_continue_85:
     #PSRARI.H
     li s6, 0x80007fff00001111 # rs1
     li s8, 0xf000100000000222 # expected result
+    TRACE_TEST 86
     psrari.h s9, s6, 3
     bne s9, s8, test_fail_86
     j test_continue_86
@@ -1040,6 +1132,7 @@ test_continue_86:
     li s6, 0x80007FFF00010002 #rs1
     li s7, 0x0000000000000003 #rs2
     li s8, 0x80007FFF00080010 #expected result
+    TRACE_TEST 87
     pssha.hs s9, s6, s7
     bne s9, s8, test_fail_87
     j test_continue_87
@@ -1052,6 +1145,7 @@ test_continue_87:
     li s6, 0x0002000100007FFF #rs1
     li s7, 0x0000000000000002 #rs2
     li s8, 0x0008000400007FFF #expected result
+    TRACE_TEST 88
     psshar.hs s9, s6, s7
     bne s9, s8, test_fail_88
     j test_continue_88
@@ -1064,6 +1158,7 @@ test_continue_88:
     li s6,  0x7FFF800080000000 # rs1
     li s7,  0x80007FFF80000000 # rs2
     li s10, 0x8000800080000000 # expected result
+    TRACE_TEST 89
     pmin.h s8, s6, s7
     bne s10, s8, test_fail_89
     j test_continue_89
@@ -1076,6 +1171,7 @@ test_continue_89:
     li s6,  0x7FFF800080000000 # rs1
     li s7,  0x80007FFF80000000 # rs2
     li s10, 0x7FFF7FFF80000000 # expected result
+    TRACE_TEST 90
     pminu.h s8, s6, s7
     bne s10, s8, test_fail_90
     j test_continue_90
@@ -1088,6 +1184,7 @@ test_continue_90:
     li s6,  0x7FFF800080000000 # rs1
     li s7,  0x80007FFF80000000 # rs2
     li s10, 0x7FFF7FFF80000000 # expected result
+    TRACE_TEST 91
     pmax.h s8, s6, s7
     bne s10, s8, test_fail_91
     j test_continue_91
@@ -1100,6 +1197,7 @@ test_continue_91:
     li s6,  0x7FFF800080000000 # rs1
     li s7,  0x80007FFF80000000 # rs2
     li s10, 0x8000800080000000 # expected result
+    TRACE_TEST 92
     pmaxu.h s8, s6, s7
     bne s10, s8, test_fail_92
     j test_continue_92
@@ -1112,6 +1210,7 @@ test_continue_92:
     li s6, 0x8888FFFF12340000 # rs1
     li s7, 0x8888FFFe12341000 # rs2
     li s8, 0xFFFF0000FFFF0000 # expected result
+    TRACE_TEST 93
     pmseq.h s9, s6, s7
     bne s9, s8, test_fail_93
     j test_continue_93
@@ -1124,6 +1223,7 @@ test_continue_93:
     li s6, 0xFFFFFFFE12340000 # rs1
     li s7, 0xFFFEFFFF12340001 # rs2
     li s8, 0x0000FFFF0000FFFF # expected result
+    TRACE_TEST 94
     pmslt.h s9, s6, s7
     bne s9, s8, test_fail_94
     j test_continue_94
@@ -1136,6 +1236,7 @@ test_continue_94:
     li s6, 0xFFFFFFFE12340000 # rs1
     li s7, 0xFFFEFFFF12340001 # rs2
     li s8, 0x0000FFFF0000FFFF # expected result
+    TRACE_TEST 95
     pmsltu.h s9, s6, s7
     bne s9, s8, test_fail_95
     j test_continue_95
@@ -1147,6 +1248,7 @@ test_continue_95:
     #PSEXT.W.B
     li s6, 0x12347F805678ABCD #rs1
     li s8, 0xFFFFFF80FFFFFFCD #expected result
+    TRACE_TEST 96
     psext.w.b s9, s6
     bne s9, s8, test_fail_96
     j test_continue_96
@@ -1158,6 +1260,7 @@ test_continue_96:
     #PSEXT.W.H
     li s6, 0x12347F805678ABCD #rs1
     li s8, 0x00007F80FFFFABCD #expected result
+    TRACE_TEST 97
     psext.w.h s9, s6
     bne s9, s8, test_fail_97
     j test_continue_97
@@ -1169,6 +1272,7 @@ test_continue_97:
     #PSATI.W
     li s6, 0x7FFFFFFF80000000 # rs1
     li s8, 0x0000000FFFFFFFF0 # rs1
+    TRACE_TEST 98
     psati.w s9, s6, 4         # -16 - 15
     bne s9, s8, test_fail_98
     j test_continue_98
@@ -1180,6 +1284,7 @@ test_continue_98:
     #PUSATI.W
     li s6, 0x7FFFFFFF80000000 # rs1
     li s8, 0x0000000F00000000 # rs1
+    TRACE_TEST 99
     pusati.w s9, s6, 4         # 0 - 15
     bne s9, s8, test_fail_99
     j test_continue_99
@@ -1191,6 +1296,7 @@ test_continue_99:
     #PSLLI.W
     li s6, 0xE000000000000001 # rs1
     li s8, 0x0000000000000008 # expected result
+    TRACE_TEST 100
     pslli.w s9, s6, 3
     bne s9, s8, test_fail_100
     j test_continue_100
@@ -1203,6 +1309,7 @@ test_continue_100:
     li s6, 0xE000000000000001 # rs1
     li s7, 0xFFFFFFFFFFFFFFE3 # rs2
     li s8, 0x0000000000000008 # expected result
+    TRACE_TEST 101
     psll.ws s9, s6, s7
     bne s9, s8, test_fail_101
     j test_continue_101
@@ -1214,6 +1321,7 @@ test_continue_101:
     #PSRLI.W
     li s6, 0x8000000000001111 # rs1
     li s8, 0x1000000000000222 # expected result
+    TRACE_TEST 102
     psrli.w s9, s6, 3
     bne s9, s8, test_fail_102
     j test_continue_102
@@ -1226,6 +1334,7 @@ test_continue_102:
     li s6, 0x8000000000001111 # rs1
     li s7, 0xFFFFFFFFFFFFFFE3 # rs2
     li s8, 0x1000000000000222 # expected result
+    TRACE_TEST 103
     psrl.ws s9, s6, s7
     bne s9, s8, test_fail_103
     j test_continue_103
@@ -1237,6 +1346,7 @@ test_continue_103:
     #PSRAI.W
     li s6, 0x8000000000001111 # rs1
     li s8, 0xF000000000000222 # expected result
+    TRACE_TEST 104
     psrai.w s9, s6, 3
     bne s9, s8, test_fail_104
     j test_continue_104
@@ -1249,6 +1359,7 @@ test_continue_104:
     li s6, 0x8000000000001111 # rs1
     li s7, 0xFFFFFFFFFFFFFFE3 # rs2
     li s8, 0xF000000000000222 # expected result
+    TRACE_TEST 105
     psra.ws s9, s6, s7
     bne s9, s8, test_fail_105
     j test_continue_105
@@ -1260,6 +1371,7 @@ test_continue_105:
     #PSSLAI.W
     li s6, 0xE000000000000001 # rs1
     li s8, 0x8000000000000008 # expected result
+    TRACE_TEST 106
     psslai.w s9, s6, 3
     bne s9, s8, test_fail_106
     j test_continue_106
@@ -1271,6 +1383,7 @@ test_continue_106:
     #PSRARI.W
     li s6, 0x8000000080000004 # rs1
     li s8, 0xF0000000F0000001 # expected result
+    TRACE_TEST 107
     psrari.w s9, s6, 3
     bne s9, s8, test_fail_107
     j test_continue_107
@@ -1283,6 +1396,7 @@ test_continue_107:
     li s6, 0x7FFFFFFF00000002 #rs1
     li s7, 0x0000000000000002 #rs2
     li s8, 0x7FFFFFFF00000008 #expected result
+    TRACE_TEST 108
     pssha.ws s9, s6, s7
     bne s9, s8, test_fail_108
     j test_continue_108
@@ -1295,6 +1409,7 @@ test_continue_108:
     li s6, 0x000000027FFFFFFF #rs1
     li s7, 0x0000000000000002 #rs2
     li s8, 0x000000087FFFFFFF #expected result
+    TRACE_TEST 109
     psshar.ws s9, s6, s7
     bne s9, s8, test_fail_109
     j test_continue_109
@@ -1307,6 +1422,7 @@ test_continue_109:
     li s6, 0x7FFFFFFF80000000 # rs1
     li s7, 0xFFFFFFFF80000001 # rs2
     li s8, 0xFFFFFFFF80000000 # expected result
+    TRACE_TEST 110
     pmin.w s9, s6, s7
     bne s9, s8, test_fail_110
     j test_continue_110
@@ -1319,6 +1435,7 @@ test_continue_110:
     li s6, 0x7FFFFFFF80000000 # rs1
     li s7, 0xFFFFFFFF80000001 # rs2
     li s8, 0x7FFFFFFF80000000 # expected result
+    TRACE_TEST 111
     pminu.w s9, s6, s7
     bne s9, s8, test_fail_111
     j test_continue_111
@@ -1331,6 +1448,7 @@ test_continue_111:
     li s6, 0x7FFFFFFF80000000 # rs1
     li s7, 0xFFFFFFFF80000001 # rs2
     li s8, 0x7FFFFFFF80000001 # expected result
+    TRACE_TEST 112
     pmax.w s9, s6, s7
     bne s9, s8, test_fail_112
     j test_continue_112
@@ -1343,6 +1461,7 @@ test_continue_112:
     li s6, 0x800000007FFFFFFF #rs1
     li s7, 0x0000000180000000 #rs2
     li s8, 0x8000000080000000 #expected result
+    TRACE_TEST 113
     pmaxu.w s9, s6, s7
     bne s9, s8, test_fail_113
     j test_continue_113
@@ -1355,6 +1474,7 @@ test_continue_113:
     li s6, 0x001214787FFFFFFF #rs1
     li s7, 0x156414137FFFFFFF #rs2
     li s8, 0x00000000FFFFFFFF #expected result
+    TRACE_TEST 114
     pmseq.w s9, s6, s7
     bne s9, s8, test_fail_114
     j test_continue_114
@@ -1367,6 +1487,7 @@ test_continue_114:
     li s6, 0x800000007FFFFFFF #rs1
     li s7, 0x0000000100000000 #rs2
     li s8, 0xFFFFFFFF00000000 #expected result
+    TRACE_TEST 115
     pmslt.w s9, s6, s7
     bne s9, s8, test_fail_115
     j test_continue_115
@@ -1379,6 +1500,7 @@ test_continue_115:
     li s6, 0x800000007FFFFFFF #rs1
     li s7, 0x0000000180000000 #rs2
     li s8, 0x00000000FFFFFFFF #expected result
+    TRACE_TEST 116
     pmsltu.w s9, s6, s7
     bne s9, s8, test_fail_116
     j test_continue_116
@@ -1390,6 +1512,7 @@ test_continue_116:
     #SATI.64
     li s6, 0x0000005000000020 #rs1
     li s8, 0x000000000000007F #expected result
+    TRACE_TEST 117
     sati s9, s6, 7
     bne s9, s8, test_fail_117
     j test_continue_117
@@ -1401,6 +1524,7 @@ test_continue_117:
     #USATI_64
     li s6, 0x0000005000000020 #rs1
     li s8, 0x000000000000007F #expected result
+    TRACE_TEST 118
     usati s9, s6, 7
     bne s9, s8, test_fail_118
     j test_continue_118
@@ -1412,6 +1536,7 @@ test_continue_118:
     #SRARI_64
     li s6, 0x800000007FFFFFFF #rs1
     li s8, 0xFF00000001000000 #expected result
+    TRACE_TEST 119
     srari s9, s6, 7
     bne s9, s8, test_fail_119
     j test_continue_119
@@ -1424,6 +1549,7 @@ test_continue_119:
     li s6, 0xFFFFFFFFFFFFFFF0 #rs1
     li s7, 0xFFFFFFFFFFFFFFFE #rs2
     li s8, 0xFFFFFFFFFFFFFFFC #expected result
+    TRACE_TEST 120
     sha s9, s6, s7
     bne s9, s8, test_fail_120
     j test_continue_120
@@ -1436,6 +1562,7 @@ test_continue_120:
     li s6, 0xFFFFFFFFFFFFFFF0 #rs1
     li s7, 0xFFFFFFFFFFFFFFFE #rs2
     li s8, 0xFFFFFFFFFFFFFFFC #expected result
+    TRACE_TEST 121
     shar s9, s6, s7
     bne s9, s8, test_fail_121
     j test_continue_121
@@ -1448,6 +1575,7 @@ test_continue_121:
     li s6, 0xAABBCCDDEEFF1122 #rs1
     li s7, 0x3344556677889900 #rs2
     li s8, 0x44BB66DD88FF0022 #expected result
+    TRACE_TEST 122
     ppaire.b s9, s6, s7
     bne s9, s8, test_fail_122
     j test_continue_122
@@ -1460,6 +1588,7 @@ test_continue_122:
     li s6, 0xAABBCCDDEEFF1122 #rs1
     li s7, 0x3344556677889900 #rs2
     li s8, 0x33BB55DD77FF9922 #expected result
+    TRACE_TEST 123
     ppaireo.b s9, s6, s7
     bne s9, s8, test_fail_123
     j test_continue_123
@@ -1472,6 +1601,7 @@ test_continue_123:
     li s6, 0xAABBCCDDEEFF1122 #rs1
     li s7, 0x3344556677889900 #rs2
     li s8, 0x44AA66CC88EE0011 #expected result
+    TRACE_TEST 124
     ppairoe.b s9, s6, s7
     bne s9, s8, test_fail_124
     j test_continue_124
@@ -1484,6 +1614,7 @@ test_continue_124:
     li s6, 0xAABBCCDDEEFF1122 #rs1
     li s7, 0x3344556677889900 #rs2
     li s8, 0x33AA55CC77EE9911 #expected result
+    TRACE_TEST 125
     ppairo.b s9, s6, s7
     bne s9, s8, test_fail_125
     j test_continue_125
@@ -1496,6 +1627,7 @@ test_continue_125:
     li s6, 0x4444333322221111 # rs1
     li s7, 0x8888777766665555 # rs2
     li s8, 0x7777333355551111 # expected result
+    TRACE_TEST 126
     ppaire.h s9, s6, s7
     bne s9, s8, test_fail_126
     j test_continue_126
@@ -1508,6 +1640,7 @@ test_continue_126:
     li s6, 0x4444333322221111 # rs1
     li s7, 0x8888777766665555 # rs2
     li s8, 0x8888333366661111 # expected result
+    TRACE_TEST 127
     ppaireo.h s9, s6, s7
     bne s9, s8, test_fail_127
     j test_continue_127
@@ -1520,6 +1653,7 @@ test_continue_127:
     li s6, 0x4444333322221111 # rs1
     li s7, 0x8888777766665555 # rs2
     li s8, 0x7777444455552222 # expected result
+    TRACE_TEST 128
     ppairoe.h s9, s6, s7
     bne s9, s8, test_fail_128
     j test_continue_128
@@ -1532,6 +1666,7 @@ test_continue_128:
     li s6, 0x4444333322221111 # rs1
     li s7, 0x8888777766665555 # rs2
     li s8, 0x8888444466662222 # expected result
+    TRACE_TEST 129
     ppairo.h s9, s6, s7
     bne s9, s8, test_fail_129
     j test_continue_129
@@ -1544,6 +1679,7 @@ test_continue_129:
     li s6, 0x7fffffff00000001 # rs1
     li s7, 0x80000000FFFFFFFF # rs2
     li s8, 0x8000000000000001 # expected result
+    TRACE_TEST 130
     ppaireo.w s9, s6, s7
     bne s9, s8, test_fail_130
     j test_continue_130
@@ -1556,6 +1692,7 @@ test_continue_130:
     li s6, 0x7fffffff00000001 # rs1
     li s7, 0x80000000FFFFFFFF # rs2
     li s8, 0xFFFFFFFF7fffffff # expected result
+    TRACE_TEST 131
     ppairoe.w s9, s6, s7
     bne s9, s8, test_fail_131
     j test_continue_131
@@ -1568,6 +1705,7 @@ test_continue_131:
     li s6, 0x7fffffff00000001 # rs1
     li s7, 0x80000000FFFFFFFF # rs2
     li s8, 0x800000007fffffff # expected result
+    TRACE_TEST 132
     ppairo.w s9, s6, s7
     bne s9, s8, test_fail_132
     j test_continue_132
@@ -1580,6 +1718,7 @@ test_continue_132:
     li s6, 0x1122334455667788 #rs1
     li s7, 0x99AABBCCDDEEFF00 #rs2
     li s8, 0xDD55EE66FF770088 #expected result
+    TRACE_TEST 133
     zip8p s9, s6, s7
     bne s9, s8, test_fail_133
     j test_continue_133
@@ -1592,6 +1731,7 @@ test_continue_133:
     li s6, 0x1122334455667788 #rs1
     li s7, 0x99AABBCCDDEEFF00 #rs2
     li s8, 0x9911AA22BB33CC44 #expected result
+    TRACE_TEST 134
     zip8hp s9, s6, s7
     bne s9, s8, test_fail_134
     j test_continue_134
@@ -1604,6 +1744,7 @@ test_continue_134:
     li s6, 0x1122334455667788 #rs1
     li s7, 0x99AABBCCDDEEFF00 #rs2
     li s8, 0xAACCEE0022446688  #expected result
+    TRACE_TEST 135
     unzip8p s9, s6, s7
     bne s9, s8, test_fail_135
     j test_continue_135
@@ -1616,6 +1757,7 @@ test_continue_135:
     li s6, 0x1122334455667788 #rs1
     li s7, 0x99AABBCCDDEEFF00 #rs2
     li s8, 0x99BBDDFF11335577 #expected result
+    TRACE_TEST 136
     unzip8hp s9, s6, s7
     bne s9, s8, test_fail_136
     j test_continue_136
@@ -1628,6 +1770,7 @@ test_continue_136:
     li s6, 0x1122334455667788 #rs1
     li s7, 0x99AABBCCDDEEFF00 #rs2
     li s8, 0xDDEE5566FF007788 #expected result
+    TRACE_TEST 137
     zip16p s9, s6, s7
     bne s9, s8, test_fail_137
     j test_continue_137
@@ -1640,6 +1783,7 @@ test_continue_137:
     li s6, 0x1122334455667788 #rs1
     li s7, 0x99AABBCCDDEEFF00 #rs2
     li s8, 0x99AA1122BBCC3344 #expected result
+    TRACE_TEST 138
     zip16hp s9, s6, s7
     bne s9, s8, test_fail_138
     j test_continue_138
@@ -1652,6 +1796,7 @@ test_continue_138:
     li s6, 0x1122334455667788 #rs1
     li s7, 0x99AABBCCDDEEFF00 #rs2
     li s8, 0xBBCCFF0033447788 #expected result
+    TRACE_TEST 139
     unzip16p s9, s6, s7
     bne s9, s8, test_fail_139
     j test_continue_139
@@ -1664,6 +1809,7 @@ test_continue_139:
     li s6, 0x1122334455667788 #rs1
     li s7, 0x99AABBCCDDEEFF00 #rs2
     li s8, 0x99AADDEE11225566 #expected result
+    TRACE_TEST 140
     unzip16hp s9, s6, s7
     bne s9, s8, test_fail_140
     j test_continue_140
@@ -1675,6 +1821,7 @@ test_continue_140:
     #ABS
     li s6, 0xFFFFFFFFFFFFFFFF #rs1
     li s8, 0x0000000000000001 #expected result
+    TRACE_TEST 141
     abs s9, s6
     bne s9, s8, test_fail_141
     j test_continue_141
@@ -1686,6 +1833,7 @@ test_continue_141:
     #CLS
     li s6, 0x1000000000000000 #rs1
     li s8, 0x0000000000000002 #rs2
+    TRACE_TEST 142
     cls s9, s6
     bne s9, s8, test_fail_142
     j test_continue_142
@@ -1697,6 +1845,7 @@ test_continue_142:
     #REV
     li s6, 0x123456789ABCDEF0 #rs1
     li s8, 0x0F7B3D591E6A2C48 #expected result
+    TRACE_TEST 143
     rev s9, s6
     bne s9, s8, test_fail_143
     j test_continue_143
@@ -1708,6 +1857,7 @@ test_continue_143:
     #REV16
     li s6, 0x123456789ABCDEF0 #rs1
     li s8, 0xDEF09ABC56781234 #expected result
+    TRACE_TEST 144
     rev16 s9, s6
     bne s9, s8, test_fail_144
     j test_continue_144
@@ -1721,6 +1871,7 @@ test_continue_144:
     li s7, 0x0000000000000008 #rs2
     li s9, 0x0000000000001234 #rd
     li s8, 0x0000000000123400 #expected result
+    TRACE_TEST 145
     slx s9, s6, s7
     bne s9, s8, test_fail_145
     j test_continue_145
@@ -1734,6 +1885,7 @@ test_continue_145:
     li s7, 0x0000000000000008 #rs2
     li s9, 0x0000000000123400 #rd
     li s8, 0xFF00000000001234 #expected result
+    TRACE_TEST 146
     srx s9, s6, s7
     bne s9, s8, test_fail_146
     j test_continue_146
@@ -1747,6 +1899,7 @@ test_continue_146:
     li s7, 0xFFFF0000FFFF0000 #rs2
     li s9, 0x123456789ABCDEF0 #rd
     li s8, 0xAAAA5678CCCCDEF0 #expected result
+    TRACE_TEST 147
     mvm s9, s6, s7
     bne s9, s8, test_fail_147
     j test_continue_147
@@ -1760,6 +1913,7 @@ test_continue_147:
     li s7, 0xFFFF0000FFFF0000 #rs2
     li s9, 0x123456789ABCDEF0 #rd
     li s8, 0x1234BBBB9ABCDDDD #expected result
+    TRACE_TEST 148
     mvmn s9, s6, s7
     bne s9, s8, test_fail_148
     j test_continue_148
@@ -1773,6 +1927,7 @@ test_continue_148:
     li s7, 0x123456789ABCDEF0 #rs2
     li s9, 0x0000FFFF0000FFFF #rd
     li s8, 0xAAAA5678CCCCDEF0 #expected result
+    TRACE_TEST 149
     merge s9, s6, s7
     bne s9, s8, test_fail_149
     j test_continue_149
@@ -1784,6 +1939,7 @@ test_continue_149:
     #ABSW
     li s6, 0x00000000FFFFFFFF #rs1
     li s8, 0x0000000000000001 #expected result
+    TRACE_TEST 150
     absw s9, s6
     bne s9, s8, test_fail_150
     j test_continue_150
@@ -1794,7 +1950,8 @@ test_continue_150:
 
     #CLSW
     li s6, 0x0000000030000000 #rs1
-    li s7, 0x0000000000000001 #expected result
+    li s8, 0x0000000000000001 #expected result
+    TRACE_TEST 151
     clsw s9, s6
     bne s9, s8, test_fail_151
     j test_continue_151
@@ -1807,6 +1964,7 @@ test_continue_151:
     li s6, 0x7FFF00028000FFFE #rs1
     li s7, 0x7FFF00037FFF0001 #rs2
     li s8, 0x3FFF0000C000FFFF #expected result
+    TRACE_TEST 152
     pmulh.h s9, s6, s7
     bne s9, s8, test_fail_152
     j test_continue_152
@@ -1819,6 +1977,7 @@ test_continue_152:
     li s6, 0x7FFF800000028000 #rs1
     li s7, 0x7FFF800100037FFF #rs2
     li s8, 0x3FFF40000000C001 #expected result
+    TRACE_TEST 153
     pmulhr.h s9, s6, s7
     bne s9, s8, test_fail_153
     j test_continue_153
@@ -1831,6 +1990,7 @@ test_continue_153:
     li s6, 0x7FFF80000002FFFE #rs1
     li s7, 0xFFFF000100030004 #rs2
     li s8, 0x7FFEFFFF0000FFFF #expected result
+    TRACE_TEST 154
     pmulhsu.h s9, s6, s7
     bne s9, s8, test_fail_154
     j test_continue_154
@@ -1843,6 +2003,7 @@ test_continue_154:
     li s6, 0x7FFF80000002FFFE #rs1
     li s7, 0xFFFF000100030004 #rs2
     li s8, 0x7FFF000000000000 #expected result
+    TRACE_TEST 155
     pmulhrsu.h s9, s6, s7
     bne s9, s8, test_fail_155
     j test_continue_155
@@ -1855,6 +2016,7 @@ test_continue_155:
     li s6, 0x8000FFFF0002FFFE #rs1
     li s7, 0x7FFF000180017FFF #rs2
     li s8, 0x3FFF000000017FFE #expected result
+    TRACE_TEST 156
     pmulhu.h s9, s6, s7
     bne s9, s8, test_fail_156
     j test_continue_156
@@ -1867,6 +2029,7 @@ test_continue_156:
     li s6, 0x8000FFFF0002FFFE #rs1
     li s7, 0x7FFF000180017FFF #rs2
     li s8, 0x4000000100017FFE #expected result
+    TRACE_TEST 157
     pmulhru.h s9, s6, s7
     bne s9, s8, test_fail_157
     j test_continue_157
@@ -1879,6 +2042,7 @@ test_continue_157:
     li s6, 0x7FFF00017FFF0001 # rs1
     li s7, 0x8000FFFF8000FFFF # rs2
     li s10, 0x8001ffff8001ffff # expected result
+    TRACE_TEST 158
     pmulq.h s8, s6, s7
     bne s10, s8, test_fail_158
     j test_continue_158
@@ -1891,6 +2055,7 @@ test_continue_158:
     li s6, 0x80007FFF00020001 #rs1
     li s7, 0x80007FFFFFFEFFFF #rs2
     li s8, 0x7FFF7FFE00000000 #expected result
+    TRACE_TEST 159
     pmulqr.h s9, s6, s7
     bne s9, s8, test_fail_159
     j test_continue_159
@@ -1904,6 +2069,7 @@ test_continue_159:
     li s7, 0x7FFF80010003FFFE #rs2
     li s9, 0x0001000200030004 #rd
     li s8, 0x4000400100030003 #expected result
+    TRACE_TEST 160
     pmhacc.h s9, s6, s7
     bne s9, s8, test_fail_160
     j test_continue_160
@@ -1917,6 +2083,7 @@ test_continue_160:
     li s7, 0x7FFF80010003FFFE #rs2
     li s9, 0x0001000200030004 #rd
     li s8, 0x4000400200030004 #expected result
+    TRACE_TEST 161
     pmhracc.h s9, s6, s7
     bne s9, s8, test_fail_161
     j test_continue_161
@@ -1930,6 +2097,7 @@ test_continue_161:
     li s7, 0xFFFF00010003FFFE #rs2
     li s9, 0x0001000200030004 #rd
     li s8, 0x7FFF000100030005 #expected result
+    TRACE_TEST 162
     pmhaccsu.h s9, s6, s7
     bne s9, s8, test_fail_162
     j test_continue_162
@@ -1943,6 +2111,7 @@ test_continue_162:
     li s7, 0xFFFF00010003FFFE #rs2
     li s9, 0x0001000200030004 #rd
     li s8, 0x8000000200030006 #expected result
+    TRACE_TEST 163
     pmhraccsu.h s9, s6, s7
     bne s9, s8, test_fail_163
     j test_continue_163
@@ -1956,6 +2125,7 @@ test_continue_163:
     li s7, 0xFFFF00010003FFFE #rs2
     li s9, 0x0001000200030004 #rd
     li s8, 0xFFFF000200030006 #expected result
+    TRACE_TEST 164
     pmhaccu.h s9, s6, s7
     bne s9, s8, test_fail_164
     j test_continue_164
@@ -1969,6 +2139,7 @@ test_continue_164:
     li s7, 0xFFFF00010003FFFE #rs2
     li s9, 0x0001000200030004 #rd
     li s8, 0xFFFF000300030007 #expected result
+    TRACE_TEST 165
     pmhraccu.h s9, s6, s7
     bne s9, s8, test_fail_165
     j test_continue_165
@@ -1981,6 +2152,7 @@ test_continue_165:
     li s6, 0x000000017FFFFFFF # rs1
     li s7, 0xFFFFFFFF7FFFFFFF # rs2
     li s8, 0xFFFFFFFF3FFFFFFF # expected result
+    TRACE_TEST 166
     pmulh.w s9, s6, s7
     bne s9, s8, test_fail_166
     j test_continue_166
@@ -1993,6 +2165,7 @@ test_continue_166:
     li s6, 0x000000017FFFFFFF # rs1
     li s7, 0xFFFFFFFF7FFFFFFF # rs2
     li s8, 0x000000003FFFFFFF # expected result
+    TRACE_TEST 167
     pmulhr.w s9, s6, s7
     bne s9, s8, test_fail_167
     j test_continue_167
@@ -2005,6 +2178,7 @@ test_continue_167:
     li s6, 0x7FFF80000002FFFE #rs1
     li s7, 0xFFFF000100030004 #rs2
     li s8, 0x7FFF000000000009 #expected result
+    TRACE_TEST 168
     pmulhsu.w s9, s6, s7
     bne s9, s8, test_fail_168
     j test_continue_168
@@ -2017,6 +2191,7 @@ test_continue_168:
     li s6, 0x7FFF80000002FFFE #rs1
     li s7, 0xFFFF000100030004 #rs2
     li s8, 0x7FFF000100000009  #expected result
+    TRACE_TEST 169
     pmulhrsu.w s9, s6, s7
     bne s9, s8, test_fail_169
     j test_continue_169
@@ -2029,6 +2204,7 @@ test_continue_169:
     li s6, 0x8000FFFF0002FFFE #rs1
     li s7, 0x7FFF000180017FFF #rs2
     li s8, 0x3FFFFFFF00018003 #expected result
+    TRACE_TEST 170
     pmulhu.w s9, s6, s7
     bne s9, s8, test_fail_170
     j test_continue_170
@@ -2041,6 +2217,7 @@ test_continue_170:
     li s6, 0x8000FFFF0002FFFE #rs1
     li s7, 0x7FFFFFFF80017FFF #rs2
     li s8, 0x40007FFF00018003 #expected result
+    TRACE_TEST 171
     pmulhru.w s9, s6, s7
     bne s9, s8, test_fail_171
     j test_continue_171
@@ -2053,6 +2230,7 @@ test_continue_171:
     li s6, 0x000000017FFFFFFF # rs1
     li s7, 0xFFFFFFFF7FFFFFFF # rs2
     li s8, 0xFFFFFFFF7FFFFFFE # expected result
+    TRACE_TEST 172
     pmulq.w s9, s6, s7
     bne s9, s8, test_fail_172
     j test_continue_172
@@ -2065,6 +2243,7 @@ test_continue_172:
     li s6, 0x000000017FFFFFFF # rs1
     li s7, 0xFFFFFFFF7FFFFFFF # rs2
     li s8, 0x000000007FFFFFFE # expected result
+    TRACE_TEST 173
     pmulqr.w s9, s6, s7
     bne s9, s8, test_fail_173
     j test_continue_173
@@ -2078,6 +2257,7 @@ test_continue_173:
     li s7, 0x0001000000010000 # rs2
     li s9, 0x7FFFFFFF00000064 # rd
     li s8, 0x8000000000000065 # expected result
+    TRACE_TEST 174
     pmhacc.w s9, s6, s7
     bne s9, s8, test_fail_174
     j test_continue_174
@@ -2091,6 +2271,7 @@ test_continue_174:
     li s7, 0x000100017FFFFFFF # rs2
     li s9, 0x7FFFFFFF00000001 # rd
     li s8, 0x8000000040000000 # expected result
+    TRACE_TEST 175
     pmhracc.w s9, s6, s7
     bne s9, s8, test_fail_175
     j test_continue_175
@@ -2104,6 +2285,7 @@ test_continue_175:
     li s7, 0xFFFF00010003FFFE #rs2
     li s9, 0x0001000200030004 #rd
     li s8, 0x800000020003000C #expected result
+    TRACE_TEST 176
     pmhaccsu.w s9, s6, s7
     bne s9, s8, test_fail_176
     j test_continue_176
@@ -2117,6 +2299,7 @@ test_continue_176:
     li s7, 0xFFFF00010003FFFE #rs2
     li s9, 0x0001000200030004 #rd
     li s8, 0x800000030003000C #expected result
+    TRACE_TEST 177
     pmhraccsu.w s9, s6, s7
     bne s9, s8, test_fail_177
     j test_continue_177
@@ -2130,6 +2313,7 @@ test_continue_177:
     li s7, 0xFFFF00010003FFFE #rs2
     li s9, 0x0001000200030004 #rd
     li s8, 0xFFFF80030003000C #expected result
+    TRACE_TEST 178
     pmhaccu.w s9, s6, s7
     bne s9, s8, test_fail_178
     j test_continue_178
@@ -2143,6 +2327,7 @@ test_continue_178:
     li s7, 0xFFFF00010003FFFE #rs2
     li s9, 0x0001000200030004 #rd
     li s8, 0xFFFF800300030010 #expected result
+    TRACE_TEST 179
     pmhraccu.w s9, s6, s7
     bne s9, s8, test_fail_179
     j test_continue_179
@@ -2156,6 +2341,7 @@ test_continue_179:
     li s7, 0x80017FFF00037FFF #rs2
     li s9, 0x0000000100000002 #rd
     li s8, 0x00007FFFFFFF8003 #expected result
+    TRACE_TEST 180
     pmqacc.w.h00 s9, s6, s7
     bne s9, s8, test_fail_180
     j test_continue_180
@@ -2169,6 +2355,7 @@ test_continue_180:
     li s7, 0x7FFF80017FFF0003 #rs2
     li s9, 0x0000000100000002 #rd
     li s8, 0x00007FFFFFFF8003 #expected result
+    TRACE_TEST 181
     pmqacc.w.h01 s9, s6, s7
     bne s9, s8, test_fail_181
     j test_continue_181
@@ -2182,6 +2369,7 @@ test_continue_181:
     li s7, 0x7FFF80017FFF0003 #rs2
     li s9, 0x0000000100000002 #rd
     li s8, 0x00007FFFFFFF8003 #expected result
+    TRACE_TEST 182
     pmqacc.w.h11 s9, s6, s7
     bne s9, s8, test_fail_182
     j test_continue_182
@@ -2195,6 +2383,7 @@ test_continue_182:
     li s7, 0x80017FFF00037FFF #rs2
     li s9, 0x0000000100000002 #rd
     li s8, 0x00007FFFFFFF8003 #expected result
+    TRACE_TEST 183
     pmqracc.w.h00 s9, s6, s7
     bne s9, s8, test_fail_183
     j test_continue_183
@@ -2208,6 +2397,7 @@ test_continue_183:
     li s7, 0x7FFF80017FFF0003 #rs2
     li s9, 0x0000000100000002 #rd
     li s8, 0x00007FFFFFFF8003 #expected result
+    TRACE_TEST 184
     pmqracc.w.h01 s9, s6, s7
     bne s9, s8, test_fail_184
     j test_continue_184
@@ -2221,6 +2411,7 @@ test_continue_184:
     li s7, 0x7FFF80017FFF0003 #rs2
     li s9, 0x0000000100000002 #rd
     li s8, 0x00007FFFFFFF8003 #expected result
+    TRACE_TEST 185
     pmqracc.w.h11 s9, s6, s7
     bne s9, s8, test_fail_185
     j test_continue_185
@@ -2233,6 +2424,7 @@ test_continue_185:
     li s6, 0x7FFF800000028000 #rs1
     li s7, 0x7FFF800100037FFF #rs2
     li s8, 0x0000FFFDFFFF8001 #expected result
+    TRACE_TEST 186
     pmq2add.h s9, s6, s7
     bne s9, s8, test_fail_186
     j test_continue_186
@@ -2246,6 +2438,7 @@ test_continue_186:
     li s7, 0x7FFF800100037FFF #rs2
     li s9, 0x0000000200000002 #rd
     li s8, 0x0000FFFFFFFF8003 #expected result
+    TRACE_TEST 187
     pmq2adda.h s9, s6, s7
     bne s9, s8, test_fail_187
     j test_continue_187
@@ -2258,6 +2451,7 @@ test_continue_187:
     li s6, 0x7FFF800000028000 #rs1
     li s7, 0x7FFF800100037FFF #rs2
     li s8, 0x0000FFFDFFFF8001 #expected result
+    TRACE_TEST 188
     pmqr2add.h s9, s6, s7
     bne s9, s8, test_fail_188
     j test_continue_188
@@ -2271,6 +2465,7 @@ test_continue_188:
     li s7, 0x7FFF800100037FFF #rs2
     li s9, 0x0000000200000002 #rd
     li s8, 0x0000FFFFFFFF8003 #expected result
+    TRACE_TEST 189
     pmqr2adda.h s9, s6, s7
     bne s9, s8, test_fail_189
     j test_continue_189
@@ -2284,6 +2479,7 @@ test_continue_189:
     li s7, 0x7FFFFFFF80000000 #rs2
     li s9, 0x0000000000001000 #rd
     li s8, 0xFFFFFFFF80001001 #expected result
+    TRACE_TEST 190
     mqacc.w00 s9, s6, s7
     bne s9, s8, test_fail_190
     j test_continue_190
@@ -2297,6 +2493,7 @@ test_continue_190:
     li s7, 0x800000007FFFFFFF #rs2
     li s9, 0x0000000000001000 #rd
     li s8, 0xFFFFFFFF80001001 #expected result
+    TRACE_TEST 191
     mqacc.w01 s9, s6, s7
     bne s9, s8, test_fail_191
     j test_continue_191
@@ -2310,6 +2507,7 @@ test_continue_191:
     li s7, 0x7FFFFFFF80000000 #rs2
     li s9, 0x0000000000001000 #rd
     li s8, 0xFFFFFFFF80001001 #expected result
+    TRACE_TEST 192
     mqacc.w11 s9, s6, s7
     bne s9, s8, test_fail_192
     j test_continue_192
@@ -2323,6 +2521,7 @@ test_continue_192:
     li s7, 0x7FFFFFFF80000000 #rs2
     li s9, 0x0000000000001000 #rd
     li s8, 0xFFFFFFFF80001001 #expected result
+    TRACE_TEST 193
     mqracc.w00 s9, s6, s7
     bne s9, s8, test_fail_193
     j test_continue_193
@@ -2336,6 +2535,7 @@ test_continue_193:
     li s7, 0x800000007FFFFFFF #rs2
     li s9, 0x0000000000001000 #rd
     li s8, 0xFFFFFFFF80001001 #expected result
+    TRACE_TEST 194
     mqracc.w01 s9, s6, s7
     bne s9, s8, test_fail_194
     j test_continue_194
@@ -2349,6 +2549,7 @@ test_continue_194:
     li s7, 0x7FFFFFFF80000000 #rs2
     li s9, 0x0000000000001000 #rd
     li s8, 0xFFFFFFFF80001001 #expected result
+    TRACE_TEST 195
     mqracc.w11 s9, s6, s7
     bne s9, s8, test_fail_195
     j test_continue_195
@@ -2361,6 +2562,7 @@ test_continue_195:
     li s6, 0x80007FFF00028000 #rs1
     li s7, 0x7FFF800100037FFF #rs2
     li s8, 0xFFFFFFFF8001000E #expected result
+    TRACE_TEST 196
     pmq2add.w s9, s6, s7
     bne s9, s8, test_fail_196
     j test_continue_196
@@ -2374,6 +2576,7 @@ test_continue_196:
     li s7, 0x7FFF800100037FFF #rs2
     li s9, 0x0000000000000001 #rd
     li s8, 0xFFFFFFFF8001000F #expected result
+    TRACE_TEST 197
     pmq2adda.w s9, s6, s7
     bne s9, s8, test_fail_197
     j test_continue_197
@@ -2386,6 +2589,7 @@ test_continue_197:
     li s6, 0x80007FFF00028000 #rs1
     li s7, 0x7FFF800100037FFF #rs2
     li s8, 0xFFFFFFFF8001000F #expected result
+    TRACE_TEST 198
     pmqr2add.w s9, s6, s7
     bne s9, s8, test_fail_198
     j test_continue_198
@@ -2399,6 +2603,7 @@ test_continue_198:
     li s7, 0x7FFF800100037FFF #rs2
     li s9, 0x0000000000000001 #rd
     li s8, 0xFFFFFFFF80010010 #expected result
+    TRACE_TEST 199
     pmqr2adda.w s9, s6, s7
     bne s9, s8, test_fail_199
     j test_continue_199
@@ -2411,6 +2616,7 @@ test_continue_199:
     li s6, 0x7F80017F05027E01 #rs1
     li s7, 0x7F0180015E80007F #rs2
     li s8, 0xFF80007FFF00007F #expected result
+    TRACE_TEST 200
     pmul.h.b00 s9, s6, s7
     bne s9, s8, test_fail_200
     j test_continue_200
@@ -2423,6 +2629,7 @@ test_continue_200:
     li s6, 0x7F80017F05027E01 #rs1
     li s7, 0x017F0180805E7F80 #rs2
     li s8, 0xFF80007FFF00007F #expected result
+    TRACE_TEST 201
     pmul.h.b01 s9, s6, s7
     bne s9, s8, test_fail_201
     j test_continue_201
@@ -2435,6 +2642,7 @@ test_continue_201:
     li s6, 0x80667F8802500101 #rs1
     li s7, 0x017F0180805E7F80 #rs2
     li s8, 0xFF80007FFF00007F #expected result
+    TRACE_TEST 202
     pmul.h.b11 s9, s6, s7
     bne s9, s8, test_fail_202
     j test_continue_202
@@ -2447,6 +2655,7 @@ test_continue_202:
     li s6, 0x7F80017F05027E01 #rs1
     li s7, 0x7F0180015E80007F #rs2
     li s8, 0xFF80007F0100007F #expected result
+    TRACE_TEST 203
     pmulsu.h.b00 s9, s6, s7
     bne s9, s8, test_fail_203
     j test_continue_203
@@ -2459,6 +2668,7 @@ test_continue_203:
     li s6, 0x807F7F04027F017E #rs1
     li s7, 0x017F010880807F55 #rs2
     li s8, 0xFF80007F0100007F #expected result
+    TRACE_TEST 204
     pmulsu.h.b11 s9, s6, s7
     bne s9, s8, test_fail_204
     j test_continue_204
@@ -2471,6 +2681,7 @@ test_continue_204:
     li s6, 0x7F80017F05027E01 #rs1
     li s7, 0x7F0180015E80007F #rs2
     li s8, 0x0080007F0100007F #expected result
+    TRACE_TEST 205
     pmulu.h.b00 s9, s6, s7
     bne s9, s8, test_fail_205
     j test_continue_205
@@ -2483,6 +2694,7 @@ test_continue_205:
     li s6, 0x7F80017F05027E01 #rs1
     li s7, 0x017F018080807F7F #rs2
     li s8, 0x0080007F0100007F #expected result
+    TRACE_TEST 206
     pmulu.h.b01 s9, s6, s7
     bne s9, s8, test_fail_206
     j test_continue_206
@@ -2495,6 +2707,7 @@ test_continue_206:
     li s6, 0x80807F7F02020101 #rs1
     li s7, 0x017F018080807F7F #rs2
     li s8, 0x0080007F0100007F #expected result
+    TRACE_TEST 207
     pmulu.h.b11 s9, s6, s7
     bne s9, s8, test_fail_207
     j test_continue_207
@@ -2507,6 +2720,7 @@ test_continue_207:
     li s6, 0xFFFF7FFFFFFF0001 # rs1
     li s7, 0xFFFF7FFF0000FFFF # rs2
     li s8, 0x3FFF0001FFFFFFFF # expected result
+    TRACE_TEST 208
     pmul.w.h00 s9, s6, s7
     bne s9, s8, test_fail_208
     j test_continue_208
@@ -2519,6 +2733,7 @@ test_continue_208:
     li s6, 0xFFFF7FFFFFFF0001 # rs1
     li s7, 0x7FFFFFFFFFFF0000 # rs2
     li s8, 0x3FFF0001FFFFFFFF # expected result
+    TRACE_TEST 209
     pmul.w.h01 s9, s6, s7
     bne s9, s8, test_fail_209
     j test_continue_209
@@ -2531,6 +2746,7 @@ test_continue_209:
     li s6, 0x7FFFFFFF0001FFFF # rs1
     li s7, 0x7FFFFFFFFFFF0000 # rs2
     li s8, 0x3FFF0001FFFFFFFF # expected result
+    TRACE_TEST 210
     pmul.w.h11 s9, s6, s7
     bne s9, s8, test_fail_210
     j test_continue_210
@@ -2543,6 +2759,7 @@ test_continue_210:
     li s6, 0xFFFF7FFFFFFF0001 # rs1
     li s7, 0xFFFF7FFF0000FFFF # rs2
     li s8, 0x3FFF00010000FFFF # expected result
+    TRACE_TEST 211
     pmulsu.w.h00 s9, s6, s7
     bne s9, s8, test_fail_211
     j test_continue_211
@@ -2555,6 +2772,7 @@ test_continue_211:
     li s6, 0x7FFFFFFF0001FFFF # rs1
     li s7, 0x7FFFFFFFFFFF0000 # rs2
     li s8, 0x3FFF00010000FFFF # expected result
+    TRACE_TEST 212
     pmulsu.w.h11 s9, s6, s7
     bne s9, s8, test_fail_212
     j test_continue_212
@@ -2567,6 +2785,7 @@ test_continue_212:
     li s6, 0xFFFF7FFFFFFFFFFF # rs1
     li s7, 0xFFFF7FFF00000001 # rs2
     li s8, 0x3FFF00010000FFFF # expected result
+    TRACE_TEST 213
     pmulu.w.h00 s9, s6, s7
     bne s9, s8, test_fail_213
     j test_continue_213
@@ -2579,6 +2798,7 @@ test_continue_213:
     li s6, 0xFFFF7FFFFFFFFFFF # rs1
     li s7, 0x7FFFFFFF000107FF # rs2
     li s8, 0x3FFF00010000FFFF # expected result
+    TRACE_TEST 214
     pmulu.w.h01 s9, s6, s7
     bne s9, s8, test_fail_214
     j test_continue_214
@@ -2591,6 +2811,7 @@ test_continue_214:
     li s6, 0x7FFFFFFFFFFFFFFF # rs1
     li s7, 0x7FFFFFFF000107FF # rs2
     li s8, 0x3FFF00010000FFFF # expected result
+    TRACE_TEST 215
     pmulu.w.h11 s9, s6, s7
     bne s9, s8, test_fail_215
     j test_continue_215
@@ -2604,6 +2825,7 @@ test_continue_215:
     li s7, 0xFFFF7FFFFFFF8000 # rs2
     li s9, 0x7FFFFFFF7FFFFFFF # rd
     li s8, 0x40007FFF40007FFF # expected result
+    TRACE_TEST 216
     pmacc.w.h00 s9, s6, s7
     bne s9, s8, test_fail_216
     j test_continue_216
@@ -2617,6 +2839,7 @@ test_continue_216:
     li s7, 0x7FFFFFFF8000FFFF # rs2
     li s9, 0x7FFFFFFF7FFFFFFF # rd
     li s8, 0x40007FFF40007FFF # expected result
+    TRACE_TEST 217
     pmacc.w.h01 s9, s6, s7
     bne s9, s8, test_fail_217
     j test_continue_217
@@ -2630,6 +2853,7 @@ test_continue_217:
     li s7, 0x7FFFFFFF8000FFFF # rs2
     li s9, 0x7FFFFFFF7FFFFFFF # rd
     li s8, 0x40007FFF40007FFF # expected result
+    TRACE_TEST 218
     pmacc.w.h11 s9, s6, s7
     bne s9, s8, test_fail_218
     j test_continue_218
@@ -2643,6 +2867,7 @@ test_continue_218:
     li s7, 0xFFFF7FFFFFFF8000 # rs2
     li s9, 0x7FFFFFFF7FFFFFFF # rd
     li s8, 0x40007FFFBFFF7FFF # expected result
+    TRACE_TEST 219
     pmaccsu.w.h00 s9, s6, s7
     bne s9, s8, test_fail_219
     j test_continue_219
@@ -2656,6 +2881,7 @@ test_continue_219:
     li s7, 0x7FFFFFFF8000FFFF # rs2
     li s9, 0x7FFFFFFF7FFFFFFF # rd
     li s8, 0x40007FFFBFFF7FFF # expected result
+    TRACE_TEST 220
     pmaccsu.w.h11 s9, s6, s7
     bne s9, s8, test_fail_220
     j test_continue_220
@@ -2669,6 +2895,7 @@ test_continue_220:
     li s7, 0xFFFF7FFFFFFF8000 # rs2
     li s9, 0x7FFFFFFF7FFFFFFF # rd
     li s8, 0xBFFF7FFFBFFF7FFF # expected result
+    TRACE_TEST 221
     pmaccu.w.h00 s9, s6, s7
     bne s9, s8, test_fail_221
     j test_continue_221
@@ -2682,6 +2909,7 @@ test_continue_221:
     li s7, 0x7FFFFFFF8000FFFF # rs2
     li s9, 0x7FFFFFFF7FFFFFFF # rd
     li s8, 0xBFFF7FFFBFFF7FFF # expected result
+    TRACE_TEST 222
     pmaccu.w.h01 s9, s6, s7
     bne s9, s8, test_fail_222
     j test_continue_222
@@ -2695,6 +2923,7 @@ test_continue_222:
     li s7, 0x7FFFFFFF8000FFFF # rs2
     li s9, 0x7FFFFFFF7FFFFFFF # rd
     li s8, 0xBFFF7FFFBFFF7FFF # expected result
+    TRACE_TEST 223
     pmaccu.w.h11 s9, s6, s7
     bne s9, s8, test_fail_223
     j test_continue_223
@@ -2707,6 +2936,7 @@ test_continue_223:
     li s6, 0x80008000FFFF0002 # rs1
     li s7, 0x800080000001FFFF # rs2
     li s8, 0x80000000FFFFFFFD # expected result
+    TRACE_TEST 224
     pm2add.h s9, s6, s7
     bne s9, s8, test_fail_224
     j test_continue_224
@@ -2719,6 +2949,7 @@ test_continue_224:
     li s6, 0x80008000FFFF0002 # rs1
     li s7, 0x800080000001FFFF # rs2
     li s8, 0x800000000001FFFD # expected result
+    TRACE_TEST 225
     pm2addsu.h s9, s6, s7
     bne s9, s8, test_fail_225
     j test_continue_225
@@ -2731,6 +2962,7 @@ test_continue_225:
     li s6, 0x80008000FFFF0002 # rs1
     li s7, 0x800080000001FFFF # rs2
     li s8, 0x800000000002FFFD # expected result
+    TRACE_TEST 226
     pm2addu.h s9, s6, s7
     bne s9, s8, test_fail_226
     j test_continue_226
@@ -2743,6 +2975,7 @@ test_continue_226:
     li s6, 0x8000800000010001 # rs1
     li s7, 0x8000800000010001 # rs2
     li s8, 0x8000000000000002 # expected result
+    TRACE_TEST 227
     pm2add.hx s9, s6, s7
     bne s9, s8, test_fail_227
     j test_continue_227
@@ -2755,6 +2988,7 @@ test_continue_227:
     li s6, 0x00017FFF00010001 # rs1
     li s7, 0x00017FFF0001FFFF # rs2
     li s8, 0x3FFF000200000000 # expected result
+    TRACE_TEST 228
     pm2sadd.h s9, s6, s7
     bne s9, s8, test_fail_228
     j test_continue_228
@@ -2767,6 +3001,7 @@ test_continue_228:
     li s6, 0x7FFF000100010001 # rs1
     li s7, 0x00017FFF0001FFFF # rs2
     li s8, 0x3FFF000200000000 # expected result
+    TRACE_TEST 229
     pm2sadd.hx s9, s6, s7
     bne s9, s8, test_fail_229
     j test_continue_229
@@ -2779,6 +3014,7 @@ test_continue_229:
     li s6, 0x00017FFF00010001 # rs1
     li s7, 0x7FFF0001FFFF0001 # rs2
     li s8, 0x0000000000000002 # expected result
+    TRACE_TEST 230
     pm2sub.h s9, s6, s7
     bne s9, s8, test_fail_230
     j test_continue_230
@@ -2790,7 +3026,8 @@ test_continue_230:
     #PM2SUB.HX
     li s6, 0x7FFF000100010001 # rs1
     li s7, 0x7FFF0001FFFF0001 # rs2
-    li s8, 0x0000000000000002 # expected result
+    li s8, 0x00000000FFFFFFFE # expected result
+    TRACE_TEST 231
     pm2sub.hx s9, s6, s7
     bne s9, s8, test_fail_231
     j test_continue_231
@@ -2804,6 +3041,7 @@ test_continue_231:
     li s7, 0x800080000001FFFF # rs2
     li s9, 0x0000000100000001 #rd
     li s8, 0x80000001FFFFFFFE # expected result
+    TRACE_TEST 232
     pm2adda.h s9, s6, s7
     bne s9, s8, test_fail_232
     j test_continue_232
@@ -2817,6 +3055,7 @@ test_continue_232:
     li s7, 0x800080000001FFFF # rs2
     li s9, 0x0000000100000001 #rd
     li s8, 0x800000010001FFFE # expected result
+    TRACE_TEST 233
     pm2addasu.h s9, s6, s7
     bne s9, s8, test_fail_233
     j test_continue_233
@@ -2830,6 +3069,7 @@ test_continue_233:
     li s7, 0x800080000001FFFF # rs2
     li s9, 0x0000001000000001 # rd
     li s8, 0x800000100002FFFE # expected result
+    TRACE_TEST 234
     pm2addau.h s9, s6, s7
     bne s9, s8, test_fail_234
     j test_continue_234
@@ -2843,6 +3083,7 @@ test_continue_234:
     li s7, 0x8000800000010001 # rs2
     li s9, 0x0000000100000002 # rd
     li s8, 0x8000000100000004 # expected result
+    TRACE_TEST 235
     pm2adda.hx s9, s6, s7
     bne s9, s8, test_fail_235
     j test_continue_235
@@ -2856,6 +3097,7 @@ test_continue_235:
     li s7, 0x7FFF0001FFFF0001 # rs2
     li s9, 0x0000000100000004 #rd
     li s8, 0x0000000100000006 # expected result
+    TRACE_TEST 236
     pm2suba.h s9, s6, s7
     bne s9, s8, test_fail_236
     j test_continue_236
@@ -2869,6 +3111,7 @@ test_continue_236:
     li s7, 0x00017FFF0001FFFF # rs2
     li s9, 0x0000000100000005 # rd
     li s8, 0x0000000100000007 # expected result
+    TRACE_TEST 237
     pm2suba.hx s9, s6, s7
     bne s9, s8, test_fail_237
     j test_continue_237
@@ -2881,6 +3124,7 @@ test_continue_237:
     li s6, 0x7FFFFFFF80000000 # rs1
     li s7, 0x80000001FFFFFFFF # rs2
     li s8, 0x0000000080000000 # expected result
+    TRACE_TEST 238
     mul.w00 s9, s6, s7
     bne s9, s8, test_fail_238
     j test_continue_238
@@ -2893,6 +3137,7 @@ test_continue_238:
     li s6, 0x7FFFFFFF80000000 # rs1
     li s7, 0xFFFFFFFF80000001 # rs2
     li s8, 0x0000000080000000 # expected result
+    TRACE_TEST 239
     mul.w01 s9, s6, s7
     bne s9, s8, test_fail_239
     j test_continue_239
@@ -2905,6 +3150,7 @@ test_continue_239:
     li s6, 0x7FFFFFFF80000000 # rs1
     li s7, 0xFFFFFFFF80000001 # rs2
     li s8, 0xFFFFFFFF80000001 # expected result
+    TRACE_TEST 240
     mul.w11 s9, s6, s7
     bne s9, s8, test_fail_240
     j test_continue_240
@@ -2917,6 +3163,7 @@ test_continue_240:
     li s6, 0x7FFFFFFF7FFFFFFF # rs1
     li s7, 0x8000000180000000 # rs2
     li s8, 0x3FFFFFFF80000000 # expected result
+    TRACE_TEST 241
     mulsu.w00 s9, s6, s7
     bne s9, s8, test_fail_241
     j test_continue_241
@@ -2929,6 +3176,7 @@ test_continue_241:
     li s6, 0x800000007FFFFFFF # rs1
     li s7, 0x7FFFFFFF80000001 # rs2
     li s8, 0xC000000080000000 # expected result
+    TRACE_TEST 242
     mulsu.w11 s9, s6, s7
     bne s9, s8, test_fail_242
     j test_continue_242
@@ -2941,6 +3189,7 @@ test_continue_242:
     li s6, 0x000000007fffffff #rs1
     li s7, 0x0000000080000000 #rs2
     li s8, 0x3FFFFFFF80000000 # expected result
+    TRACE_TEST 243
     mulu.w00 s10, s6, s7
     bne s10, s8, test_fail_243
     j test_continue_243
@@ -2953,6 +3202,7 @@ test_continue_243:
     li s6, 0x000000007fffffff
     li s7, 0x8000000000000000
     li s8, 0x3FFFFFFF80000000
+    TRACE_TEST 244
     mulu.w01 s10, s6, s7
     bne s10, s8, test_fail_244
     j test_continue_244
@@ -2965,6 +3215,7 @@ test_continue_244:
     li s6, 0x7fffffff00000000
     li s7, 0x8000000000000000
     li s8, 0x3FFFFFFF80000000
+    TRACE_TEST 245
     mulu.w11 s10, s6, s7
     bne s10, s8, test_fail_245
     j test_continue_245
@@ -2978,6 +3229,7 @@ test_continue_245:
     li s7, 0x80000001FFFFFFFF # rs2
     li s9, 0x7FFFFFFF00000000 # rd
     li s8, 0x7FFFFFFF80000000 # expected result
+    TRACE_TEST 246
     macc.w00 s9, s6, s7
     bne s9, s8, test_fail_246
     j test_continue_246
@@ -2991,6 +3243,7 @@ test_continue_246:
     li s7, 0xFFFFFFFF80000001 # rs2
     li s9, 0x7FFFFFFF00000000 # rd
     li s8, 0x7FFFFFFF80000000 # expected result
+    TRACE_TEST 247
     macc.w01 s9, s6, s7
     bne s9, s8, test_fail_247
     j test_continue_247
@@ -3004,6 +3257,7 @@ test_continue_247:
     li s7, 0xFFFFFFFF80000001 # rs2
     li s9, 0x7FFFFFFF00000000 # rd
     li s8, 0x7FFFFFFF80000000 # expected result
+    TRACE_TEST 248
     macc.w11 s9, s6, s7
     bne s9, s8, test_fail_248
     j test_continue_248
@@ -3017,6 +3271,7 @@ test_continue_248:
     li s7, 0x8000000180000000 # rs2
     li s9, 0x0000000000000001 # rd
     li s8, 0x3FFFFFFF80000001 # expected result
+    TRACE_TEST 249
     maccsu.w00 s9, s6, s7
     bne s9, s8, test_fail_249
     j test_continue_249
@@ -3030,6 +3285,7 @@ test_continue_249:
     li s7, 0x8000000080000001 # rs2
     li s9, 0x0000000000000001 # rd
     li s8, 0x3FFFFFFF80000001 # expected result
+    TRACE_TEST 250
     maccsu.w11 s9, s6, s7
     bne s9, s8, test_fail_250
     j test_continue_250
@@ -3043,6 +3299,7 @@ test_continue_250:
     li s7, 0x0000000080000000 #rs2
     li s9, 0x0000000000000001 #rd
     li s8, 0x3FFFFFFF80000001 # expected result
+    TRACE_TEST 251
     maccu.w00 s9, s6, s7
     bne s9, s8, test_fail_251
     j test_continue_251
@@ -3056,6 +3313,7 @@ test_continue_251:
     li s7, 0x8000000000000000 #rs2
     li s9, 0x0000000000000001 #rd
     li s8, 0x3FFFFFFF80000001 # expected result
+    TRACE_TEST 252
     maccu.w01 s9, s6, s7
     bne s9, s8, test_fail_252
     j test_continue_252
@@ -3069,6 +3327,7 @@ test_continue_252:
     li s7, 0x8000000000000000 #rs2
     li s9, 0x0000000000000001 #rd
     li s8, 0x3FFFFFFF80000001 # expected result
+    TRACE_TEST 253
     maccu.w11 s9, s6, s7
     bne s9, s8, test_fail_253
     j test_continue_253
@@ -3081,6 +3340,7 @@ test_continue_253:
     li s6, 0x800000007FFFFFFF # rs1
     li s7, 0x7FFFFFFF80000000 # rs2
     li s8, 0x8000000100000000 # expected result
+    TRACE_TEST 254
     pm2add.w s9, s6, s7
     bne s9, s8, test_fail_254
     j test_continue_254
@@ -3093,6 +3353,7 @@ test_continue_254:
     li s6, 0x800000007FFFFFFF # rs1
     li s7, 0x7FFFFFFF80000000 # rs2
     li s8, 0x0000000000000000 # expected result
+    TRACE_TEST 255
     pm2addsu.w s9, s6, s7
     bne s9, s8, test_fail_255
     j test_continue_255
@@ -3105,6 +3366,7 @@ test_continue_255:
     li s6, 0x800000007FFFFFFF # rs1
     li s7, 0x7FFFFFFF80000000 # rs2
     li s8, 0x7FFFFFFF00000000 # expected result
+    TRACE_TEST 256
     pm2addu.w s9, s6, s7
     bne s9, s8, test_fail_256
     j test_continue_256
@@ -3117,6 +3379,7 @@ test_continue_256:
     li s6, 0x800000007FFFFFFF # rs1
     li s7, 0x800000007FFFFFFF # rs2
     li s8, 0x8000000100000000 # expected result
+    TRACE_TEST 257
     pm2add.wx s9, s6, s7
     bne s9, s8, test_fail_257
     j test_continue_257
@@ -3129,6 +3392,7 @@ test_continue_257:
     li s6, 0x7FFFFFFE7FFFFFFF # rs1
     li s7, 0x7FFFFFFD7FFFFFFC # rs2
     li s8, 0xFFFFFFFFFFFFFFFE # expected result
+    TRACE_TEST 258
     pm2sub.w s9, s6, s7
     bne s9, s8, test_fail_258
     j test_continue_258
@@ -3140,7 +3404,8 @@ test_continue_258:
     #PM2SUB.WX
     li s6, 0x7FFFFFFE7FFFFFFF # rs1
     li s7, 0x7FFFFFFC7FFFFFFD # rs2
-    li s8, 0x0000000000000002 # expected result
+    li s8, 0xFFFFFFFFFFFFFFFE # expected result
+    TRACE_TEST 259
     pm2sub.wx s9, s6, s7
     bne s9, s8, test_fail_259
     j test_continue_259
@@ -3154,6 +3419,7 @@ test_continue_259:
     li s7, 0x0000000200000001
     li s9, 0x1111111111111111
     li s8, 0x1111111111111116
+    TRACE_TEST 260
     pm2adda.w s9, s6, s7
     bne s9, s8, test_fail_260
     j test_continue_260
@@ -3167,6 +3433,7 @@ test_continue_260:
     li s7, 0x0000000280000000 #rs2
     li s9, 0x0000000000000001 #rd
     li s8, 0x0000000080000005 #expected result
+    TRACE_TEST 261
     pm2addasu.w s9, s6, s7
     bne s9, s8, test_fail_261
     j test_continue_261
@@ -3180,6 +3447,7 @@ test_continue_261:
     li s7, 0x0000000280000000 #rs2
     li s9, 0x0000000000000001 #rd
     li s8, 0x0000000180000001 #expected result
+    TRACE_TEST 262
     pm2addau.w s9, s6, s7
     bne s9, s8, test_fail_262
     j test_continue_262
@@ -3193,6 +3461,7 @@ test_continue_262:
     li s7, 0x0000000100000002 #rs2
     li s9, 0x1111111111111111 #rd
     li s8, 0x1111111111111116 #expected result
+    TRACE_TEST 263
     pm2adda.wx s9, s6, s7
     bne s9, s8, test_fail_263
     j test_continue_263
@@ -3206,6 +3475,7 @@ test_continue_263:
     li s7, 0x7FFFFFFD7FFFFFFC # rs2
     li s9, 0x0000000000000001 # rd
     li s8, 0xFFFFFFFFFFFFFFFF # expected result
+    TRACE_TEST 264
     pm2suba.w s9, s6, s7
     bne s9, s8, test_fail_264
     j test_continue_264
@@ -3219,6 +3489,7 @@ test_continue_264:
     li s7, 0x7FFFFFFC7FFFFFFD # rs2
     li s9, 0x0000000000000001 # rd
     li s8, 0xFFFFFFFFFFFFFFFF # expected result
+    TRACE_TEST 265
     pm2suba.wx s9, s6, s7
     bne s9, s8, test_fail_265
     j test_continue_265
@@ -3231,6 +3502,7 @@ test_continue_265:
     li s6, 0x8003020104030201 # rs1
     li s7, 0x0103020104030201 # rs2
     li s8, 0xFFFFFF8E0000001E # expected result
+    TRACE_TEST 266
     pm4add.b s9, s6, s7
     bne s9, s8, test_fail_266
     j test_continue_266
@@ -3243,6 +3515,7 @@ test_continue_266:
     li s6, 0x0103020104030201 # rs1
     li s7, 0x8003020104030201 # rs2
     li s8, 0x0000008E0000001E # expected result
+    TRACE_TEST 267
     pm4addsu.b s9, s6, s7
     bne s9, s8, test_fail_267
     j test_continue_267
@@ -3255,6 +3528,7 @@ test_continue_267:
     li s6, 0x8003020104030201 # rs1
     li s7, 0x0103020104030201 # rs2
     li s8, 0x0000008E0000001E # expected result
+    TRACE_TEST 268
     pm4addu.b s9, s6, s7
     bne s9, s8, test_fail_268
     j test_continue_268
@@ -3268,6 +3542,7 @@ test_continue_268:
     li s7, 0x0103020104030201 # rs2
     li s9, 0x0000000100000001 # rd
     li s8, 0xFFFFFF8F0000001F # expected result
+    TRACE_TEST 269
     pm4adda.b s9, s6, s7
     bne s9, s8, test_fail_269
     j test_continue_269
@@ -3281,6 +3556,7 @@ test_continue_269:
     li s7, 0x8003020104030201 # rs2
     li s9, 0x0000000100000001 # rd
     li s8, 0x0000008F0000001F # expected result
+    TRACE_TEST 270
     pm4addasu.b s9, s6, s7
     bne s9, s8, test_fail_270
     j test_continue_270
@@ -3294,6 +3570,7 @@ test_continue_270:
     li s7, 0x0103020104030201 # rs2
     li s9, 0x0000000100000001 # rd
     li s8, 0x0000008F0000001F # expected result
+    TRACE_TEST 271
     pm4addau.b s9, s6, s7
     bne s9, s8, test_fail_271
     j test_continue_271
@@ -3306,6 +3583,7 @@ test_continue_271:
     li s6, 0x7FFF80000001FFFF #rs1
     li s7, 0x80007FFF00020001 #rs2
     li s8, 0xFFFFFFFF80010001 #expected result
+    TRACE_TEST 272
     pm4add.h s9, s6, s7
     bne s9, s8, test_fail_272
     j test_continue_272
@@ -3318,6 +3596,7 @@ test_continue_272:
     li s6, 0x7FFF80000001FFFF #rs1
     li s7, 0x80007FFF00020001 #rs2
     li s8, 0x0000000000000001 #expected result
+    TRACE_TEST 273
     pm4addsu.h s9, s6, s7
     bne s9, s8, test_fail_273
     j test_continue_273
@@ -3330,6 +3609,7 @@ test_continue_273:
     li s6, 0x7FFF80000001FFFF #rs1
     li s7, 0x80007FFF00020001 #rs2
     li s8, 0x0000000080000001 #expected result
+    TRACE_TEST 274
     pm4addu.h s9, s6, s7
     bne s9, s8, test_fail_274
     j test_continue_274
@@ -3343,6 +3623,7 @@ test_continue_274:
     li s7, 0x80007FFF00020001 #rs2
     li s9, 0x0000000000000001 #rd
     li s8, 0xFFFFFFFF80010002 #expected result
+    TRACE_TEST 275
     pm4adda.h s9, s6, s7
     bne s9, s8, test_fail_275
     j test_continue_275
@@ -3356,6 +3637,7 @@ test_continue_275:
     li s7, 0x80007FFF00020001 #rs2
     li s9, 0x0000000000000001 # rd
     li s8, 0x0000000000000002 #expected result
+    TRACE_TEST 276
     pm4addasu.h s9, s6, s7
     bne s9, s8, test_fail_276
     j test_continue_276
@@ -3369,6 +3651,7 @@ test_continue_276:
     li s7, 0x80007FFF00020001 #rs2
     li s9, 0x0000000000000001 # rd
     li s8, 0x0000000080000002 #expected result
+    TRACE_TEST 277
     pm4addau.h s9, s6, s7
     bne s9, s8, test_fail_277
     j test_continue_277
@@ -3381,6 +3664,7 @@ test_continue_277:
     li s6, 0x7FFF80000001FFFF #rs1
     li s7, 0x01017F7F80010001 #rs2
     li s8, 0x007FC0800000FFFF #expected result
+    TRACE_TEST 278
     pmulh.h.b0 s9, s6, s7
     bne s9, s8, test_fail_278
     j test_continue_278
@@ -3393,6 +3677,7 @@ test_continue_278:
     li s6, 0x7FFF80000001FFFF #rs1
     li s7, 0x01017F7F01800100 #rs2
     li s8, 0x007FC0800000FFFF #expected result
+    TRACE_TEST 279
     pmulh.h.b1 s9, s6, s7
     bne s9, s8, test_fail_279
     j test_continue_279
@@ -3405,6 +3690,7 @@ test_continue_279:
     li s6, 0x7FFF80000010FFFF #rs1
     li s7, 0x01017F7F01800001 #rs2
     li s8, 0x007FC0800008FFFF #expected result
+    TRACE_TEST 280
     pmulhsu.h.b0 s9, s6, s7
     bne s9, s8, test_fail_280
     j test_continue_280
@@ -3417,6 +3703,7 @@ test_continue_280:
     li s6, 0x7FFF80000010FFFF #rs1
     li s7, 0x01017F7F8001017F #rs2
     li s8, 0x007FC0800008FFFF #expected result
+    TRACE_TEST 281
     pmulhsu.h.b1 s9, s6, s7
     bne s9, s8, test_fail_281
     j test_continue_281
@@ -3430,6 +3717,7 @@ test_continue_281:
     li s7, 0x01017F7F80010001 #rs2
     li s9, 0x0001000100010001 #rd
     li s8, 0x0080C08100010000 #expected result
+    TRACE_TEST 282
     pmhacc.h.b0 s9, s6, s7
     bne s9, s8, test_fail_282
     j test_continue_282
@@ -3443,6 +3731,7 @@ test_continue_282:
     li s7, 0x01017F7F01000180 #rs2
     li s9, 0x0001000100010001 #rd
     li s8, 0x0080C08100010000 #expected result
+    TRACE_TEST 283
     pmhacc.h.b1 s9, s6, s7
     bne s9, s8, test_fail_283
     j test_continue_283
@@ -3456,6 +3745,7 @@ test_continue_283:
     li s7, 0x01017F7F01800001 #rs2
     li s9, 0x0001000100010001 #rd
     li s8, 0x0080C08100090000 #expected result
+    TRACE_TEST 284
     pmhaccsu.h.b0 s9, s6, s7
     bne s9, s8, test_fail_284
     j test_continue_284
@@ -3469,6 +3759,7 @@ test_continue_284:
     li s7, 0x01017F7F8000017F #rs2
     li s9, 0x0001000100010001 #rd
     li s8, 0x0080C08100090000 #expected result
+    TRACE_TEST 285
     pmhaccsu.h.b1 s9, s6, s7
     bne s9, s8, test_fail_285
     j test_continue_285
@@ -3481,6 +3772,7 @@ test_continue_285:
     li s6, 0x000000017FFFFFFF # rs1
     li s7, 0x0000FFFF00007FFF # rs2
     li s8, 0xFFFFFFFF3FFF7FFF # expected result
+    TRACE_TEST 286
     pmulh.w.h0 s9, s6, s7
     bne s9, s8, test_fail_286
     j test_continue_286
@@ -3493,6 +3785,7 @@ test_continue_286:
     li s6, 0x000000017FFFFFFF # rs1
     li s7, 0xFFFF00007FFF0000 # rs2
     li s8, 0xFFFFFFFF3FFF7FFF # expected result
+    TRACE_TEST 287
     pmulh.w.h1 s9, s6, s7
     bne s9, s8, test_fail_287
     j test_continue_287
@@ -3505,6 +3798,7 @@ test_continue_287:
     li s6, 0x000000017FFFFFFF # rs1
     li s7, 0x0000FFFF00007FFF # rs2
     li s8, 0x000000003FFF7FFF # expected result
+    TRACE_TEST 288
     pmulhsu.w.h0 s9, s6, s7
     bne s9, s8, test_fail_288
     j test_continue_288
@@ -3517,6 +3811,7 @@ test_continue_288:
     li s6, 0x000000017FFFFFFF # rs1
     li s7, 0xFFFF00007FFF0000 # rs2
     li s8, 0x000000003FFF7FFF # expected result
+    TRACE_TEST 289
     pmulhsu.w.h1 s9, s6, s7
     bne s9, s8, test_fail_289
     j test_continue_289
@@ -3530,6 +3825,7 @@ test_continue_289:
     li s7, 0x0000FFFF00007FFF # rs2
     li s9, 0x0000000000000000 # rd
     li s8, 0xFFFFFFFF3FFF7FFF # expected result
+    TRACE_TEST 290
     pmhacc.w.h0 s9, s6, s7
     bne s9, s8, test_fail_290
     j test_continue_290
@@ -3543,6 +3839,7 @@ test_continue_290:
     li s7, 0xFFFF00007FFF0000 # rs2
     li s9, 0x0000000100000001 # rd
     li s8, 0x000000003FFF8000 # expected result
+    TRACE_TEST 291
     pmhacc.w.h1 s9, s6, s7
     bne s9, s8, test_fail_291
     j test_continue_291
@@ -3556,6 +3853,7 @@ test_continue_291:
     li s7, 0x0000FFFF00007FFF # rs2
     li s9, 0x0000000100000001 # rd
     li s8, 0x000000013FFF8000 # expected result
+    TRACE_TEST 292
     pmhaccsu.w.h0 s9, s6, s7
     bne s9, s8, test_fail_292
     j test_continue_292
@@ -3569,6 +3867,7 @@ test_continue_292:
     li s7, 0xFFFF00007FFF0000 # rs2
     li s9, 0x0000000100000001 # rd
     li s8, 0x000000013FFF8000 # expected result
+    TRACE_TEST 293
     pmhaccsu.w.h1 s9, s6, s7
     bne s9, s8, test_fail_293
     j test_continue_293
@@ -3576,6 +3875,7 @@ test_fail_293:
     la a0, test_name_293
     jal ra, report_error
 test_continue_293:
+/*
 
     #PSSHL.HS
     li s6, 0xF23412347FFF0001 # rs1
@@ -3720,6 +4020,74 @@ test_fail_305:
     la a0, test_name_305
     jal ra, report_error
 test_continue_305:
+*/
+    #PLI.W
+    li s8, 0x0000012300000123 # expected result
+    TRACE_TEST 306
+    pli.w s9, 0x123
+    bne s9, s8, test_fail_306
+    j test_continue_306
+test_fail_306:
+    la a0, test_name_306
+    jal ra, report_error
+test_continue_306:
+
+    #PLUI.W
+    li s8, 0x48c0000048c00000 # expected result
+    TRACE_TEST 307
+    plui.w s9, 0x123
+    bne s9, s8, test_fail_307
+    j test_continue_307
+test_fail_307:
+    la a0, test_name_307
+    jal ra, report_error
+test_continue_307:
+
+    #PACK
+    li s6, 0xAAAABBBBCCCCDDDD # rs1
+    li s7, 0x1111222233334444 # rs2
+    li s8, 0x33334444CCCCDDDD # expected result
+    TRACE_TEST 308
+    pack s9, s6, s7
+    bne s9, s8, test_fail_308
+    j test_continue_308
+test_fail_308:
+    la a0, test_name_308
+    jal ra, report_error
+test_continue_308:
+
+    #PLI.B
+    li s8, 0x1212121212121212 # expected result
+    TRACE_TEST 309
+    pli.b s9, 0x12
+    bne s9, s8, test_fail_309
+    j test_continue_309
+test_fail_309:
+    la a0, test_name_309
+    jal ra, report_error
+test_continue_309:
+
+    #PLI.H
+    li s8, 0x0123012301230123 # expected result
+    TRACE_TEST 310
+    pli.h s9, 0x123
+    bne s9, s8, test_fail_310
+    j test_continue_310
+test_fail_310:
+    la a0, test_name_310
+    jal ra, report_error
+test_continue_310:
+
+    #PLUI.H
+    li s8, 0x48C048C048C048C0 # expected result
+    TRACE_TEST 311
+    plui.h s9, 0x123
+    bne s9, s8, test_fail_311
+    j test_continue_311
+test_fail_311:
+    la a0, test_name_311
+    jal ra, report_error
+test_continue_311:
 
     # prepare final status output
     beqz    s5, print_pass
@@ -3767,6 +4135,28 @@ report_error_suffix:
     ld      ra, 16(sp)
     addi    sp, sp, 24
     ret
+trace_test:
+    li      s1, 0x10000000  # UART output register
+    la      s2, run_prefix
+trace_test_prefix_loop:
+    lb      s4, 0(s2)
+    beqz    s4, trace_test_name_start
+    sb      s4, 0(s1)
+    addi    s2, s2, 1
+    j       trace_test_prefix_loop
+trace_test_name_start:
+    mv      s2, a0
+trace_test_name_loop:
+    lb      s4, 0(s2)
+    beqz    s4, trace_test_suffix
+    sb      s4, 0(s1)
+    addi    s2, s2, 1
+    j       trace_test_name_loop
+trace_test_suffix:
+    la      s2, newline
+    lb      s4, 0(s2)
+    sb      s4, 0(s1)
+    ret
 write_range:
     lb      s4, 0(s2)       # load next byte at s2 into s4
     sb      s4, 0(s1)       # write byte to UART register
@@ -3784,6 +4174,8 @@ newline:
   .string "\n"
 error_prefix:
   .string "FAIL: "
+run_prefix:
+  .string "RUN: "
 summary_fail:
   .string "completed: FAIL\n"
 
@@ -4705,6 +5097,24 @@ test_name_304:
 
 test_name_305:
   .string "PNCLIPUP.W"
+
+test_name_306:
+  .string "PLI.W"
+
+test_name_307:
+  .string "PLUI.W"
+
+test_name_308:
+  .string "PACK"
+
+test_name_309:
+  .string "PLI.B"
+
+test_name_310:
+  .string "PLI.H"
+
+test_name_311:
+  .string "PLUI.H"
 
 pass:
   .string "passed!\n"
